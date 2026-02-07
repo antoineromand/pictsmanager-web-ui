@@ -8,9 +8,15 @@ import { AppFooter } from './app/components/core/app-footer/app-footer';
 @Component({
 	selector: 'app-root',
 	template: `
-	<app-header [isAuthenticated]="isAuthenticated()"></app-header>
-	<router-outlet></router-outlet>
-	<app-footer></app-footer>
+	<div class="min-h-screen flex flex-col">
+		<app-header [isAuthenticated]="isAuthenticated()"></app-header>
+
+		<main class="flex-1">
+			<router-outlet></router-outlet>
+		</main>
+
+		<app-footer></app-footer>
+	</div>
   `,
 	imports: [RouterOutlet, AppHeader, AppFooter],
 })

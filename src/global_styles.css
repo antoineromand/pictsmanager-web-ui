@@ -13,7 +13,7 @@ body {
 }
 
 .bg-main-color {
-    --main-color-bg: #fdf5fe;
+    --main-color-bg: #fdf5fe !important;
 }
 
 :root {
