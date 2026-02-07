@@ -24,9 +24,10 @@
                 variant="ghost" routerLink="/">Home</button></li>
         <li routerLinkActive="bg-black/10 rounded-lg" [routerLinkActiveOptions]="{exact:true}"><button hlmBtn
                 variant="ghost" routerLink="/login">Get Started</button></li>
-        <li><button hlmBtn variant="ghost">About</button></li>
+        <li routerLinkActive="bg-black/10 rounded-lg" [routerLinkActiveOptions]="{exact:true}"><button hlmBtn
+                variant="ghost" routerLink="/about">About</button></li>
     </ul>
-    <button hlmBtn variant="outline" size="lg">
+    <button hlmBtn variant="outline" size="lg" routerLink="/login">
         <span>Sign In</span>
         <ng-icon hlm size="sm" name="lucideLogIn" />
     </button>
