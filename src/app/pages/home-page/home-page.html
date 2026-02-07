@@ -1,9 +1,13 @@
 <div class="container mt-20">
     <home-banner></home-banner>
 
-    <div class="cards-example mt-10 flex justify-around">
-        <picture-card></picture-card>
-        <picture-card></picture-card>
-        <picture-card></picture-card>
+    <div class="cards-example mt-10 flex flex-wrap justify-center gap-6">
+        <picture-card [username]="'Elisa.moreira'" [profilPicture]="'https://placehold.co/150x150'"
+            [picture_url]="'assets/img/picture_1.png'" [description]="'🎨 Express yoursel !! ✨'"></picture-card>
+        <picture-card [username]="'Jack.pinto'" [profilPicture]="'https://placehold.co/150x150'"
+            [picture_url]="'assets/img/picture_2.png'"
+            [description]="'A great souvenir during my last trip to Hawai !  🗺'"></picture-card>
+        <picture-card [username]="'TheGreatFamily'" [profilPicture]="'https://placehold.co/150x150'"
+            [picture_url]="'assets/img/picture_3.png'" [description]="'I love my family ! 🥰😘'"></picture-card>
     </div>
 </div>

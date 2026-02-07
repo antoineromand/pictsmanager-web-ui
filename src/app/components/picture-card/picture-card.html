@@ -1,1 +1,14 @@
-<p>picture-card works!</p>
+<section hlmCard class="w-[360px] h-[520px] flex flex-col">
+    <div hlmCardHeader class="flex items-center gap-3">
+        <img class="w-10 h-10 rounded-full object-cover" [src]="profilPicture()">
+        <h3 hlmCardTitle>{{ username() }}</h3>
+    </div>
+
+    <div hlmCardContent class="flex flex-col gap-3 flex-1">
+        <img [src]="picture_url()" alt="" class="w-full h-[360px] object-cover rounded-md">
+
+        <span class="text-sm line-clamp-3 text-muted-foreground">
+            {{ description() }}
+        </span>
+    </div>
+</section>
