@@ -5,7 +5,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "demo": {
+    "pictsmanager-ui": {
       "architect": {
         "build": {
           "builder": "@angular/build:application",
@@ -26,13 +26,19 @@
             }
           },
           "options": {
-            "assets": [],
+            "assets": [
+              "src/assets"
+            ],
             "index": "src/index.html",
             "browser": "src/main.ts",
-            "outputPath": "dist/demo",
-            "polyfills": ["zone.js"],
+            "outputPath": "dist/pictsmanager-ui",
+            "polyfills": [
+              "zone.js"
+            ],
             "scripts": [],
-            "styles": ["src/global_styles.css"],
+            "styles": [
+              "src/global_styles.css"
+            ],
             "tsConfig": "tsconfig.app.json"
           }
         },
@@ -40,10 +46,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "development": {
-              "buildTarget": "demo:build:development"
+              "buildTarget": "pictsmanager-ui:build:development"
             },
             "production": {
-              "buildTarget": "demo:build:production"
+              "buildTarget": "pictsmanager-ui:build:production"
             }
           },
           "defaultConfiguration": "development"
