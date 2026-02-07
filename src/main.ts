@@ -1,9 +1,9 @@
 import { Component, signal } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
-import { AppHeader } from './app/components/app-header/app-header';
+import { AppHeader } from './app/components/core/app-header/app-header';
 import { provideRouter, RouterOutlet } from '@angular/router';
 import { routes } from './app.routes';
-import { AppFooter } from './app/components/app-footer/app-footer';
+import { AppFooter } from './app/components/core/app-footer/app-footer';
 
 @Component({
 	selector: 'app-root',
