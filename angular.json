@@ -55,7 +55,7 @@
           "defaultConfiguration": "development"
         }
       },
-      "prefix": "app",
+      "prefix": "",
       "projectType": "application",
       "root": "",
       "schematics": {},
