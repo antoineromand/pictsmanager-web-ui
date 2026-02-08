@@ -1,11 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators, type AbstractControl, type ValidationErrors, type ValidatorFn } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmCardImports } from '@spartan-ng/helm/card';
 import { HlmFormFieldImports } from '@spartan-ng/helm/form-field';
 import { HlmInputImports } from '@spartan-ng/helm/input';
 import { HlmLabelImports } from '@spartan-ng/helm/label';
+import { AuthenticationService } from '../../../services/authentication.service';
+import type { RegisterRequestInterface } from '../../../interfaces/authentication.interface';
+import { toast } from 'ngx-sonner';
 
 export const matchPasswordValidator = (
   passwordKey: string,
@@ -27,6 +30,9 @@ export const matchPasswordValidator = (
   templateUrl: './register-page.html',
 })
 export class RegisterPage {
+
+  authenticationService = inject(AuthenticationService);
+  router = inject(Router); 
   registerForm = new FormGroup({
     username: new FormControl('', [
       Validators.required,
@@ -62,6 +68,25 @@ export class RegisterPage {
   });
 
   submit() {
-    console.log(this.registerForm.value);
+
+    if (this.registerForm.valid) {
+      const form = this.registerForm.controls;
+      const payload: RegisterRequestInterface = {
+        username: form.username.value as string,
+        email: form.email.value as string,
+        password: form.password.value as string,
+        birthDate: form.dateOfBirth.value as string,
+        description: form.description.value as string,
+      };
+
+      this.authenticationService.register(payload).subscribe({
+        next: () => {
+          toast.success("Account created, please connect.");
+          this.router.navigate(["/login"]);
+        }, error: (err) => {
+          toast.error("An error has occured during the registration, please checks your form and try again.");
+        }
+      });
+    }
   }
 }

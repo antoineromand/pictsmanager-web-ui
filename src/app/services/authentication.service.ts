@@ -1,6 +1,6 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment';
-import type { LoginRequestInterface } from '../interfaces/authentication.interface';
+import type { LoginRequestInterface, RegisterRequestInterface } from '../interfaces/authentication.interface';
 import { HttpClient, type HttpResponse } from '@angular/common/http';
 import { tap } from 'rxjs';
 
@@ -30,6 +30,10 @@ export class AuthenticationService {
         }
       })
     );
+  }
+
+  register(request: RegisterRequestInterface) {
+    return this.httpClient.post(this.apiUrl + "register", request);
   }
 
   getIsAuthenticated() {
