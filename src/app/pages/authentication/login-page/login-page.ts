@@ -7,6 +7,7 @@ import { HlmInputImports } from '@spartan-ng/helm/input';
 import { HlmLabelImports } from '@spartan-ng/helm/label';
 import { AuthenticationService } from '../../../services/authentication.service';
 import type { HttpResponse } from '@angular/common/http';
+import { toast } from 'ngx-sonner';
 
 @Component({
   selector: 'login-page',
@@ -30,9 +31,9 @@ export class LoginPage {
         }
       ).subscribe({
         next() {
-          console.log("yes");
+          toast.success("Logged in successfuly !");
         }, error(err) {
-          console.log(err);
+          toast.error("Error, please check your credentials !");
         },
       });
     }

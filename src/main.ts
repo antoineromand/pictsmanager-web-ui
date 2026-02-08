@@ -6,6 +6,8 @@ import { routes } from './app.routes';
 import { AppFooter } from './app/components/core/app-footer/app-footer';
 import { provideHttpClient } from '@angular/common/http';
 import { AuthenticationService } from './app/services/authentication.service';
+import { HlmToasterImports } from '@spartan-ng/helm/sonner';
+import { toast } from 'ngx-sonner';
 
 @Component({
 	selector: 'app-root',
@@ -18,9 +20,14 @@ import { AuthenticationService } from './app/services/authentication.service';
 		</main>
 
 		<app-footer></app-footer>
+		<hlm-toaster 
+		position="top-right"
+		expand
+		richColors
+		/>
 	</div>
   `,
-	imports: [RouterOutlet, AppHeader, AppFooter],
+	imports: [RouterOutlet, AppHeader, AppFooter, HlmToasterImports],
 })
 export class App {
 	authenticationService = inject(AuthenticationService);
@@ -28,6 +35,7 @@ export class App {
 
 	cleanToken(event: boolean) {
 		this.authenticationService.logout();
+		toast.info("You have been logged out.");
 	}
 }
 
