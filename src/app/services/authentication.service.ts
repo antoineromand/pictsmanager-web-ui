@@ -22,7 +22,7 @@ export class AuthenticationService {
   });
 
   login(request: LoginRequestInterface) {
-    return this.httpClient.post<any>(this.apiUrl + "login", request, { observe: 'response' }).pipe(
+    return this.httpClient.post<any>(this.apiUrl + "login", request, { observe: 'response', withCredentials: true }).pipe(
       tap((res: HttpResponse<any>) => {
         const token = res.headers.get('Authorization');
         if (token) {
@@ -46,12 +46,29 @@ export class AuthenticationService {
     }
   }
 
+  getToken() {
+    return this._token();
+  }
+
   logout() {
     localStorage.removeItem('access_token');
     this._token.set(null);
     return this.httpClient.post<any>(this.apiUrl + "logout", {}).subscribe(
       {
         next: () => {
+          toast.info("You have been logged out.");
+        }, error: (err) => {
+          toast.error("An error occured while user tried to logged out");
+        }
+      }
+    );
+  }
+
+  refreshToken() {
+    return this.httpClient.post<any>(this.apiUrl + "refresh", null, { observe: "response", withCredentials: true }).subscribe(
+      {
+        next: (response) => {
+          console.log(response);
           toast.info("You have been logged out.");
         }, error: (err) => {
           toast.error("An error occured while user tried to logged out");

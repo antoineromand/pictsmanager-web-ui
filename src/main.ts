@@ -4,16 +4,17 @@ import { AppHeader } from './app/components/core/app-header/app-header';
 import { provideRouter, Router, RouterOutlet } from '@angular/router';
 import { routes } from './app.routes';
 import { AppFooter } from './app/components/core/app-footer/app-footer';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { AuthenticationService } from './app/services/authentication.service';
 import { HlmToasterImports } from '@spartan-ng/helm/sonner';
+import { authInterceptor } from './app/interceptors/auth-interceptor-interceptor';
 
 @Component({
 	selector: 'app-root',
 	template: `
 	<div class="min-h-screen flex flex-col">
 		<app-header [isAuthenticated]="authenticationService.isAuthenticated()" (closeEvent)="cleanToken($event)"></app-header>
-
+		<button (click)="test()">REFRESH</button>
 		<main class="flex-1">
 			<router-outlet></router-outlet>
 		</main>
@@ -37,8 +38,12 @@ export class App {
 		this.authenticationService.logout();
 		this.router.navigate([""]);
 	}
+
+	test() {
+		this.authenticationService.refreshToken();
+	}
 }
 
 bootstrapApplication(App, {
-	providers: [provideRouter(routes), provideHttpClient()]
+	providers: [provideRouter(routes), provideHttpClient(withInterceptors([authInterceptor]))]
 });
