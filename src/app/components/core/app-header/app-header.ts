@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideLogIn, lucideLogOut } from '@ng-icons/lucide';
@@ -14,4 +14,9 @@ import { RouterLink, RouterModule } from "@angular/router";
 })
 export class AppHeader {
   isAuthenticated = input(false);
+  closeEvent = output<boolean>();
+
+  logout() {
+    this.closeEvent.emit(true);
+  }
 }

@@ -5,7 +5,7 @@ import { HlmIconImports } from '@spartan-ng/helm/icon';
 
 @Component({
   selector: 'home-banner',
-  imports: [HlmButtonImports, HlmIconImports, NgIcon],
+  imports: [HlmButtonImports, HlmIconImports],
   templateUrl: './home-banner.html',
 })
 export class HomeBanner {
