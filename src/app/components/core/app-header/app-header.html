@@ -1,13 +1,15 @@
 <div class="flex justify-around items-center-safe">
     @if (isAuthenticated()) {
-    <div class="flex items-center-safe">
+    <div class="flex flex-col items-center-safe">
         <img src="assets/img/app-logo.png" alt="Pictsmanager's logo" width="100px" height="100px">
         <h4 class="italic font-bold">PictsManager</h4>
     </div>
 
     <ul class="menu flex items-center-safe text-black gap-4 bg-black/5 rounded-xl p-2">
-        <li><button hlmBtn variant="ghost">Home</button></li>
-        <li><button hlmBtn variant="ghost">My Profile</button></li>
+        <li routerLinkActive="bg-black/10 rounded-lg" [routerLinkActiveOptions]="{exact:true}"><button hlmBtn
+                variant="ghost" routerLink="/">Home</button></li>
+        <li routerLinkActive="bg-black/10 rounded-lg" [routerLinkActiveOptions]="{exact:true}"><button hlmBtn
+                variant="ghost">My Profile</button></li>
     </ul>
     <button hlmBtn variant="outline" size="lg" (click)="logout()">
         <span>Sign Out</span>
