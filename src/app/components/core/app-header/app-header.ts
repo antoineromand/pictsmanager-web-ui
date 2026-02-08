@@ -9,8 +9,7 @@ import { RouterLink, RouterModule } from "@angular/router";
   selector: 'app-header',
   imports: [HlmButtonImports, NgIcon, HlmIconImports, RouterLink, RouterModule],
   providers: [provideIcons({ lucideLogIn, lucideLogOut })],
-  templateUrl: './app-header.html',
-  styleUrl: './app-header.css',
+  templateUrl: './app-header.html'
 })
 export class AppHeader {
   isAuthenticated = input(false);

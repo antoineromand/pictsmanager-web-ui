@@ -6,12 +6,12 @@ import { HlmFormFieldImports } from '@spartan-ng/helm/form-field';
 import { HlmInputImports } from '@spartan-ng/helm/input';
 import { HlmLabelImports } from '@spartan-ng/helm/label';
 import { AuthenticationService } from '../../../services/authentication.service';
-import type { HttpResponse } from '@angular/common/http';
 import { toast } from 'ngx-sonner';
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'login-page',
-  imports: [HlmCardImports, HlmButtonImports, HlmLabelImports, HlmInputImports, HlmFormFieldImports, ReactiveFormsModule],
+  imports: [HlmCardImports, HlmButtonImports, HlmLabelImports, HlmInputImports, HlmFormFieldImports, ReactiveFormsModule, RouterLink],
   templateUrl: './login-page.html'
 })
 export class LoginPage {

@@ -1,0 +1,71 @@
+<div class="min-h-full flex items-center justify-center px-4 py-12">
+    <section class="w-full max-w-md mx-auto flex flex-col min-h-[600px]" hlmCard>
+        <div hlmCardHeader>
+            <h3 hlmCardTitle class="text-2xl">Create an account</h3>
+            <p hlmCardDescription>
+                Fill in the information below to create your account.
+            </p>
+        </div>
+
+        <div hlmCardContent class="flex-1">
+            <form [formGroup]="registerForm" class="space-y-6">
+                <div class="grid gap-2">
+                    <label hlmLabel for="username">Username</label>
+                    <input hlmInput id="username" type="text" formControlName="username" placeholder="jasonbalboa"
+                        autocomplete="username" class="w-full" />
+                </div>
+
+                <div class="grid gap-2">
+                    <label hlmLabel for="email">Email</label>
+                    <input hlmInput id="email" type="email" formControlName="email" placeholder="jasonbalboa@gmail.com"
+                        autocomplete="email" class="w-full" />
+                </div>
+
+                <div class="grid gap-2">
+                    <label hlmLabel for="password">Password</label>
+                    <input hlmInput id="password" type="password" formControlName="password" placeholder="••••••••"
+                        autocomplete="new-password" class="w-full" />
+                </div>
+
+                <div class="grid gap-2">
+                    <label hlmLabel for="confirmPassword">Confirm password</label>
+                    <input hlmInput id="confirmPassword" type="password" formControlName="confirmPassword"
+                        placeholder="••••••••" autocomplete="new-password" class="w-full" />
+
+                    @if (
+                    registerForm.hasError('passwordMismatch') &&
+                    registerForm.get('confirmPassword')?.touched
+                    ) {
+                    <p class="text-xs text-red-600">
+                        Passwords do not match.
+                    </p>
+                    }
+                </div>
+
+                <div class="grid gap-2">
+                    <label hlmLabel for="dateOfBirth">Date of birth</label>
+                    <input hlmInput id="dateOfBirth" type="date" formControlName="dateOfBirth" class="w-full" />
+                </div>
+
+                <div class="grid gap-2">
+                    <label hlmLabel for="description">Description</label>
+                    <textarea hlmInput id="description" rows="3" formControlName="description"
+                        placeholder="Software developer - 30 years old" class="w-full resize-none"></textarea>
+                </div>
+            </form>
+        </div>
+
+        <div hlmCardFooter class="mt-auto flex-col gap-4">
+            <button hlmBtn type="submit" class="w-full bg-emerald-500 hover:bg-emerald-600" (click)="submit()">
+                Create account
+            </button>
+
+            <p class="text-sm text-gray-600 text-center">
+                Already have an account?
+                <a routerLink="/login" class="text-gray-900 underline underline-offset-4">
+                    Sign in
+                </a>
+            </p>
+        </div>
+    </section>
+</div>
