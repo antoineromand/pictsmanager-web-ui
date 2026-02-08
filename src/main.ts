@@ -14,14 +14,13 @@ import { authInterceptor } from './app/interceptors/auth-interceptor-interceptor
 	template: `
 	<div class="min-h-screen flex flex-col">
 		<app-header [isAuthenticated]="authenticationService.isAuthenticated()" (closeEvent)="cleanToken($event)"></app-header>
-		<button (click)="test()">REFRESH</button>
 		<main class="flex-1">
 			<router-outlet></router-outlet>
 		</main>
 
 		<app-footer></app-footer>
 		<hlm-toaster 
-		position="top-right"
+		position="bottom-right"
 		expand
 		richColors
 		/>
@@ -37,10 +36,6 @@ export class App {
 	cleanToken(event: boolean) {
 		this.authenticationService.logout();
 		this.router.navigate([""]);
-	}
-
-	test() {
-		this.authenticationService.refreshToken();
 	}
 }
 

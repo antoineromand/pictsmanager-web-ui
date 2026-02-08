@@ -4,6 +4,7 @@ import type { LoginRequestInterface, RegisterRequestInterface } from '../interfa
 import { HttpClient, type HttpResponse } from '@angular/common/http';
 import { tap } from 'rxjs';
 import { toast } from 'ngx-sonner';
+import { Router } from '@angular/router';
 
 
 @Injectable({
@@ -13,6 +14,9 @@ export class AuthenticationService {
   private apiUrl: string = environment.apiUrl + 'public/api/auth/';
 
   private httpClient = inject(HttpClient);
+
+  private router = inject(Router);
+
 
   private _token = signal<string | null>(localStorage.getItem('access_token'));
 
@@ -28,6 +32,7 @@ export class AuthenticationService {
         if (token) {
           localStorage.setItem('access_token', token);
           this._token.set(token);
+          this.router.navigate(["/profile"]);
         }
       })
     );
@@ -65,15 +70,19 @@ export class AuthenticationService {
   }
 
   refreshToken() {
-    return this.httpClient.post<any>(this.apiUrl + "refresh", null, { observe: "response", withCredentials: true }).subscribe(
-      {
-        next: (response) => {
-          console.log(response);
-          toast.info("You have been logged out.");
-        }, error: (err) => {
-          toast.error("An error occured while user tried to logged out");
-        }
-      }
-    );
+    return this.httpClient
+      .post<any>(this.apiUrl + 'refresh', null, {
+        observe: 'response',
+        withCredentials: true,
+      })
+      .pipe(
+        tap((res: HttpResponse<any>) => {
+          const token = res.headers.get('Authorization');
+          if (token) {
+            localStorage.setItem('access_token', token);
+            this._token.set(token);
+          }
+        })
+      );
   }
 }
