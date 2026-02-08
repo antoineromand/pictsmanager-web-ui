@@ -8,7 +8,7 @@ export const guestOnlyGuard: CanActivateFn = (route, state) => {
     const router = inject(Router);
 
     if (service.isAuthenticated()) {
-        return router.createUrlTree(['/']);
+        return router.createUrlTree(['/profile']);
     }
     return true;
 };

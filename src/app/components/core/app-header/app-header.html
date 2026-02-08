@@ -7,9 +7,7 @@
 
     <ul class="menu flex items-center-safe text-black gap-4 bg-black/5 rounded-xl p-2">
         <li routerLinkActive="bg-black/10 rounded-lg" [routerLinkActiveOptions]="{exact:true}"><button hlmBtn
-                variant="ghost" routerLink="/">Home</button></li>
-        <li routerLinkActive="bg-black/10 rounded-lg" [routerLinkActiveOptions]="{exact:true}"><button hlmBtn
-                variant="ghost">My Profile</button></li>
+                variant="ghost" routerLink="/profile">My Profile</button></li>
     </ul>
     <button hlmBtn variant="outline" size="lg" (click)="logout()">
         <span>Sign Out</span>

@@ -5,8 +5,7 @@ import { PictureCard } from '../../components/picture-card/picture-card';
 @Component({
   selector: 'home-page',
   imports: [HomeBanner, PictureCard],
-  templateUrl: './home-page.html',
-  styleUrl: './home-page.css',
+  templateUrl: './home-page.html'
 })
 export class HomePage {
 

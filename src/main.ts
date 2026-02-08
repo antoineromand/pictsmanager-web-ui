@@ -1,13 +1,12 @@
 import { Component, inject, signal } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { AppHeader } from './app/components/core/app-header/app-header';
-import { provideRouter, RouterOutlet } from '@angular/router';
+import { provideRouter, Router, RouterOutlet } from '@angular/router';
 import { routes } from './app.routes';
 import { AppFooter } from './app/components/core/app-footer/app-footer';
 import { provideHttpClient } from '@angular/common/http';
 import { AuthenticationService } from './app/services/authentication.service';
 import { HlmToasterImports } from '@spartan-ng/helm/sonner';
-import { toast } from 'ngx-sonner';
 
 @Component({
 	selector: 'app-root',
@@ -31,11 +30,12 @@ import { toast } from 'ngx-sonner';
 })
 export class App {
 	authenticationService = inject(AuthenticationService);
+	router = inject(Router);
 	name = 'Angular';
 
 	cleanToken(event: boolean) {
 		this.authenticationService.logout();
-		toast.info("You have been logged out.");
+		this.router.navigate([""]);
 	}
 }
 

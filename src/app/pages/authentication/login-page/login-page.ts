@@ -33,7 +33,7 @@ export class LoginPage {
       ).subscribe({
         next: () => {
           toast.success("Logged in successfuly !");
-          this.router.navigate([""]);
+          this.router.navigate(["/profile"]);
         }, error(err) {
           toast.error("Error, please check your credentials !");
         },

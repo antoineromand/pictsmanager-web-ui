@@ -5,10 +5,12 @@ import { AboutMe } from './app/pages/about-me/about-me';
 import { RegisterPage } from './app/pages/authentication/register-page/register-page';
 import { authGuard } from './app/guards/auth-guard';
 import { guestOnlyGuard } from './app/guards/guest-only-guard';
+import { ProfilePage } from './app/pages/profile-page/profile-page';
 
 export const routes: Routes = [
-    { path: "", component: HomePage },
+    { path: "", component: HomePage, canActivate: [guestOnlyGuard] },
     { path: "login", component: LoginPage, canActivate: [guestOnlyGuard] },
     { path: "register", component: RegisterPage, canActivate: [guestOnlyGuard] },
-    { path: "about", component: AboutMe }
+    { path: "about", component: AboutMe, canActivate: [guestOnlyGuard] },
+    { path: "profile", component: ProfilePage, canActivate: [authGuard] }
 ];

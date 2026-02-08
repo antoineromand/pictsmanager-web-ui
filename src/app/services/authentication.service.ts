@@ -3,6 +3,7 @@ import { environment } from '../../environments/environment';
 import type { LoginRequestInterface, RegisterRequestInterface } from '../interfaces/authentication.interface';
 import { HttpClient, type HttpResponse } from '@angular/common/http';
 import { tap } from 'rxjs';
+import { toast } from 'ngx-sonner';
 
 
 @Injectable({
@@ -13,7 +14,7 @@ export class AuthenticationService {
 
   private httpClient = inject(HttpClient);
 
-  private _token = signal<string | null>(localStorage.getItem('token'));
+  private _token = signal<string | null>(localStorage.getItem('access_token'));
 
   readonly isAuthenticated = computed(() => {
     const t = this._token();
@@ -25,7 +26,7 @@ export class AuthenticationService {
       tap((res: HttpResponse<any>) => {
         const token = res.headers.get('Authorization');
         if (token) {
-          localStorage.setItem('token', token);
+          localStorage.setItem('access_token', token);
           this._token.set(token);
         }
       })
@@ -37,7 +38,7 @@ export class AuthenticationService {
   }
 
   getIsAuthenticated() {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("access_token");
     if (!token) return false;
     else {
       if (token.length > 10) return true;
@@ -46,7 +47,16 @@ export class AuthenticationService {
   }
 
   logout() {
-    localStorage.removeItem('token');
+    localStorage.removeItem('access_token');
     this._token.set(null);
+    return this.httpClient.post<any>(this.apiUrl + "logout", {}).subscribe(
+      {
+        next: () => {
+          toast.info("You have been logged out.");
+        }, error: (err) => {
+          toast.error("An error occured while user tried to logged out");
+        }
+      }
+    );
   }
 }
