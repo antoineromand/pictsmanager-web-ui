@@ -7,7 +7,7 @@ import { AppFooter } from './app/components/core/app-footer/app-footer';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { AuthenticationService } from './app/services/authentication.service';
 import { HlmToasterImports } from '@spartan-ng/helm/sonner';
-import { authInterceptor } from './app/interceptors/auth-interceptor-interceptor';
+import { authInterceptor } from './app/interceptors/auth-interceptor';
 
 @Component({
 	selector: 'app-root',

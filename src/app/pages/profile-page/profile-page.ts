@@ -1,21 +1,32 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, inject, type OnInit } from '@angular/core';
+import { Component, inject, signal, type OnInit } from '@angular/core';
+import { UserProfileService } from '../../services/user-profile.service';
+import type { UpdateUserProfileRequestInterface, UserProfileInterface } from '../../interfaces/user-profile.interface';
+import { MyProfile } from '../../components/my-profile/my-profile';
 
 @Component({
   selector: 'profile-page',
-  imports: [],
+  imports: [MyProfile],
   templateUrl: './profile-page.html'
 })
 export class ProfilePage implements OnInit {
 
-  httpClient = inject(HttpClient);
+  userProfileService = inject(UserProfileService);
+
+  userProfil = signal<UserProfileInterface | null>(null);
 
   ngOnInit(): void {
-    this.httpClient.get("http://localhost:4000/private/api/user/me/profil").subscribe({
+    this.userProfileService.getUserProfil().subscribe({
       next: (res) => {
-        console.log(res);
-      }
+        this.userProfil.set(res.data);
+      },
     });
+  }
+
+  updateUserProfil(data: UpdateUserProfileRequestInterface) {
+    console.log(data);
+    // this.userProfileService.updateUserProfil(data).subscribe({
+
+    // });
   }
 
 }

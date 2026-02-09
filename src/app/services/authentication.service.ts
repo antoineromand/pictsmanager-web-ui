@@ -58,10 +58,11 @@ export class AuthenticationService {
   logout() {
     localStorage.removeItem('access_token');
     this._token.set(null);
-    return this.httpClient.post<any>(this.apiUrl + "logout", {}).subscribe(
+    return this.httpClient.post<any>(this.apiUrl + "logout", {}, { withCredentials: true }).subscribe(
       {
         next: () => {
           toast.info("You have been logged out.");
+          this.router.navigate(["/login"]);
         }, error: (err) => {
           toast.error("An error occured while user tried to logged out");
         }
@@ -85,4 +86,6 @@ export class AuthenticationService {
         })
       );
   }
+
+
 }
