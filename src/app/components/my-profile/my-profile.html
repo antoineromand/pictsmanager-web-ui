@@ -1,90 +1,147 @@
-<div class="flex w-full flex-col md:flex-row items-center md:items-start gap-8">
-    <div class="shrink-0 relative">
-        <div class="w-36 h-36 rounded-full overflow-hidden ring-2 ring-neutral-200">
-            <img [src]="userProfile() ? userProfile()?.picture : 'https://i.pravatar.cc/300'" alt="Avatar utilisateur"
-                class="w-full h-full object-cover" />
+<section class="w-full">
+    <div class="relative w-full overflow-hidden rounded-2xl border border-neutral-200 bg-neutral-100">
+
+        <!-- COVER -->
+        @if (userProfile()?.coverPicture) {
+        <img [src]="userProfile()?.coverPicture" alt="Cover" class="h-32 w-full object-cover sm:h-40" />
+        } @else {
+        <img src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png" alt="Cover"
+            class="h-32 w-full object-cover sm:h-40" />
+        }
+
+        <!-- Gradient overlay -->
+        <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/30 via-black/10 to-transparent">
         </div>
-        <div class="absolute -bottom-1 -right-1
-           w-9 h-9 rounded-full
-           flex items-center justify-center
-           border border-white
-           shadow-sm
-           bg-white">
-            <ng-icon [name]="userProfile()?.isPublic ? 'lucideLockOpen' : 'lucideLock'" class="w-5 h-5"
-                [color]="userProfile()?.isPublic ? 'green' : 'red'" />
+
+        <!-- ACTION BUTTON -->
+        <div class="absolute right-3 top-3">
+            @if (mode() === "READ") {
+            <button (click)="switchMode('UPDATE')"
+                class="inline-flex h-8 items-center rounded-lg bg-white/90 px-3 text-sm font-medium text-neutral-900 shadow-sm ring-1 ring-black/5 backdrop-blur hover:bg-white">
+                Modifier
+            </button>
+            } @else {
+            <button (click)="switchMode('READ')"
+                class="inline-flex h-8 items-center rounded-lg bg-white/90 px-3 text-sm font-medium text-neutral-900 shadow-sm ring-1 ring-black/5 backdrop-blur hover:bg-white">
+                Voir le profil
+            </button>
+            }
+        </div>
+
+        <!-- CONTENT -->
+        <div class="relative px-4 pb-3 sm:px-5">
+            <div class="-mt-6 flex flex-col gap-4 sm:-mt-8 sm:flex-row sm:items-end sm:gap-6">
+
+                <!-- AVATAR -->
+                <div class="shrink-0">
+                    <div class="relative">
+                        <div class="h-20 w-20 overflow-hidden rounded-xl bg-white ring-4 ring-white sm:h-24 sm:w-24">
+                            <img [src]="userProfile()?.picture ?? 'https://i.pravatar.cc/300'" alt="Avatar utilisateur"
+                                class="h-full w-full object-cover" />
+                        </div>
+
+                        <!-- PUBLIC / PRIVATE BADGE -->
+                        <div class="absolute -bottom-1 -right-1 grid h-8 w-8 place-items-center rounded-full bg-white shadow-sm ring-1 ring-neutral-200"
+                            [attr.title]="userProfile()?.isPublic ? 'Profil public' : 'Profil privé'">
+                            <ng-icon [name]="userProfile()?.isPublic ? 'lucideLockOpen' : 'lucideLock'" class="h-4 w-4"
+                                [color]="userProfile()?.isPublic ? 'green' : 'red'" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- INFO CARD -->
+                <div class="flex-1 rounded-xl bg-white/95 p-3 shadow-sm ring-1 ring-black/5 backdrop-blur sm:p-4">
+
+                    @if (mode() === "READ") {
+
+                    <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                        <div class="min-w-0">
+                            <h1 class="truncate text-xl font-semibold text-neutral-900">
+                                @{{ userProfile()?.username }}
+                            </h1>
+                            <p class="mt-1 line-clamp-2 text-sm text-neutral-600">
+                                {{ userProfile()?.description ?? '' }}
+                            </p>
+                        </div>
+
+                        <!-- STATS -->
+                        <div class="flex shrink-0 gap-4 text-sm">
+                            <div class="text-center">
+                                <div class="font-semibold text-neutral-900">128</div>
+                                <div class="text-neutral-500">posts</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="font-semibold text-neutral-900">3 420</div>
+                                <div class="text-neutral-500">likes</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    } @else {
+
+                    <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                        <div>
+                            <h1 class="truncate text-xl font-semibold text-neutral-900">
+                                @{{ userProfile()?.username }}
+                            </h1>
+                            <p class="mt-1 text-sm text-neutral-600">
+                                Modifie ta bio et tes images
+                            </p>
+                        </div>
+
+                        <div class="flex shrink-0 gap-4 text-sm">
+                            <div class="text-center">
+                                <div class="font-semibold text-neutral-900">128</div>
+                                <div class="text-neutral-500">posts</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="font-semibold text-neutral-900">3 420</div>
+                                <div class="text-neutral-500">likes</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FORM -->
+                    <form class="mt-4 grid gap-3 sm:grid-cols-2" [formGroup]="updateForm" (ngSubmit)="update()">
+                        <div class="sm:col-span-2">
+                            <label class="mb-1 block text-sm font-medium text-neutral-800">
+                                Bio
+                            </label>
+                            <textarea rows="3" formControlName="description"
+                                class="w-full resize-none rounded-lg border border-neutral-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-neutral-200"></textarea>
+                        </div>
+
+                        <div>
+                            <label class="mb-1 block text-sm font-medium text-neutral-800">
+                                Photo de profil
+                            </label>
+                            <input type="file" formControlName="profilePicture"
+                                class="block w-full rounded-lg border border-neutral-200 text-sm file:mr-3 file:rounded-md file:border-0 file:bg-neutral-900 file:px-3 file:py-1.5 file:text-white" />
+                        </div>
+
+                        <div>
+                            <label class="mb-1 block text-sm font-medium text-neutral-800">
+                                Cover
+                            </label>
+                            <input type="file" formControlName="coverPicture"
+                                class="block w-full rounded-lg border border-neutral-200 text-sm file:mr-3 file:rounded-md file:border-0 file:bg-neutral-900 file:px-3 file:py-1.5 file:text-white" />
+                        </div>
+
+                        <div class="sm:col-span-2 flex justify-end gap-2 pt-1">
+                            <button type="button" (click)="switchMode('READ')"
+                                class="h-9 rounded-lg border border-neutral-200 px-4 text-sm hover:bg-neutral-50">
+                                Annuler
+                            </button>
+                            <button type="submit"
+                                class="h-9 rounded-lg bg-neutral-900 px-4 text-sm font-medium text-white hover:bg-neutral-800">
+                                Enregistrer
+                            </button>
+                        </div>
+                    </form>
+
+                    }
+                </div>
+            </div>
         </div>
     </div>
-
-    @if (mode() === "READ") {
-
-    <div class="flex-1 w-full">
-
-        <div class="flex w-full flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <h1 class="text-2xl font-semibold">
-                @{{ userProfile()?.username }}
-            </h1>
-
-            <div class="flex gap-2">
-                <button (click)="switchMode('UPDATE')"
-                    class="px-4 h-9 rounded-lg border border-neutral-300 text-sm font-medium hover:bg-neutral-50 active:scale-[0.99]">
-                    Modifier le profil
-                </button>
-            </div>
-        </div>
-
-        <div class="flex flex-wrap gap-x-6 gap-y-2 mt-4 text-sm">
-            <div>
-                <span class="font-semibold">128</span>
-                <span class="text-neutral-600"> posts</span>
-            </div>
-            <div>
-                <span class="font-semibold">3 420</span>
-                <span class="text-neutral-600"> likes</span>
-            </div>
-        </div>
-
-        <div class="mt-4 space-y-1 text-sm text-neutral-700">
-            <p>
-                {{ userProfile() ? userProfile()?.description : '' }}
-            </p>
-        </div>
-
-    </div>
-    } @else if (mode() === "UPDATE") {
-
-    <div class="flex-1 w-full">
-
-        <div class="flex w-full flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <h1 class="text-2xl font-semibold">
-                @{{ userProfile()?.username }}
-            </h1>
-
-            <div class="flex gap-2">
-                <button (click)="switchMode('READ')"
-                    class="px-4 h-9 rounded-lg border border-neutral-300 text-sm font-medium hover:bg-neutral-50 active:scale-[0.99]">
-                    Afficher le profil
-                </button>
-            </div>
-        </div>
-
-        <div class="mt-4 space-y-1 text-sm text-neutral-700">
-            <form class="space-y-6" [formGroup]="updateForm" (ngSubmit)="update()">
-                <div class="grid w-full max-w-sm items-center gap-2">
-                    <label hlmLabel for="description">Bio</label>
-                    <textarea hlmTextarea id="description" class="w-80" formControlName="description"></textarea>
-                </div>
-                <div class="grid w-full max-w-sm items-center gap-3">
-                    <label hlmLabel for="profilPicture">Profile picture</label>
-                    <input hlmInput id="profilPicture" type="file" formControlName="profilePicture" />
-                </div>
-                <div class="grid w-full max-w-sm items-center gap-3">
-                    <label hlmLabel for="coverPicture">Cover picture</label>
-                    <input hlmInput id="coverPicture" type="file" formControlName="coverPicture" />
-                </div>
-                <button hlmBtn type="submit">Submit</button>
-            </form>
-        </div>
-
-    </div>
-    }
-</div>
+</section>

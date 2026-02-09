@@ -2,6 +2,7 @@ import { Component, inject, signal, type OnInit } from '@angular/core';
 import { UserProfileService } from '../../services/user-profile.service';
 import type { UpdateUserProfileRequestInterface, UserProfileInterface } from '../../interfaces/user-profile.interface';
 import { MyProfile } from '../../components/my-profile/my-profile';
+import { toast } from 'ngx-sonner';
 
 @Component({
   selector: 'profile-page',
@@ -24,9 +25,22 @@ export class ProfilePage implements OnInit {
 
   updateUserProfil(data: UpdateUserProfileRequestInterface) {
     console.log(data);
-    // this.userProfileService.updateUserProfil(data).subscribe({
+    this.userProfileService.updateUserProfil(data).subscribe({
+      next: (response) => {
+        this.userProfil.update(current => {
+          if (!current) return current;
 
-    // });
+          return {
+            ...current,
+            description: response.data.description ?? current.description,
+            picture: response.data.picture ?? current.picture,
+            coverPicture: response.data.coverPicture ?? current.coverPicture,
+          };
+        });
+
+        toast.success("Your profile has been updated.");
+      }
+    });
   }
 
 }

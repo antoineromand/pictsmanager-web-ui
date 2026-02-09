@@ -22,5 +22,5 @@ export interface UpdateUserProfileRequestInterface {
 }
 
 export interface UpdateUserProfileResponseInterface {
-    data: UserProfileInterface;
+    data: UserPublicProfile;
 }

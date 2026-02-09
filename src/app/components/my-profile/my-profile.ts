@@ -37,8 +37,8 @@ export class MyProfile {
 
       this.updateForm.patchValue({
         description: profile.description ?? '',
-        profilePictureUrl: profile.picture ?? '',
-        coverPictureUrl: profile.coverPicture ?? '',
+        profilePictureUrl: profile.picture ?? null,
+        coverPictureUrl: profile.coverPicture ?? null,
         profilePicture: null,
         coverPicture: null,
       }, { emitEvent: false });

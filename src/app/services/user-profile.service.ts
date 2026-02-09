@@ -15,7 +15,7 @@ export class UserProfileService {
     return this.httpClient.get<GetUserProfileResponseInterface>(this.apiUrl);
   }
 
-  updateUserProfil(payload: UpdateUserProfileRequestInterface) {
-    return this.httpClient.put<UpdateUserProfileResponseInterface>(this.apiUrl + "/me", {});
+  updateUserProfil(request: UpdateUserProfileRequestInterface) {
+    return this.httpClient.put<UpdateUserProfileResponseInterface>(this.apiUrl, { ...request.payload });
   }
 }
