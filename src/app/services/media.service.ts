@@ -19,4 +19,8 @@ export class MediaService {
             }
         });
     }
+
+    uploadFiles(formData: FormData) {
+        return this.httpClient.post(this.apiUrl, formData);
+    }
 }

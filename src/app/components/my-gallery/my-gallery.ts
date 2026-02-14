@@ -6,14 +6,14 @@ import { toast } from 'ngx-sonner';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { HlmIconImports } from '@spartan-ng/helm/icon';
-import { lucideChevronLeftCircle, lucideChevronRightCircle } from '@ng-icons/lucide';
+import { lucideCamera, lucideChevronLeftCircle, lucideChevronRightCircle, lucideUpload } from '@ng-icons/lucide';
 
 
 
 @Component({
   selector: 'my-gallery',
   imports: [HlmButtonImports, NgIcon, HlmIconImports],
-  providers: [provideIcons({ lucideChevronRightCircle, lucideChevronLeftCircle })],
+  providers: [provideIcons({ lucideChevronRightCircle, lucideChevronLeftCircle, lucideCamera, lucideUpload })],
   templateUrl: './my-gallery.html'
 })
 export class MyGallery {
@@ -69,6 +69,19 @@ export class MyGallery {
 
   getUrl(originalKey: string) {
     return environment.mediaUrl + originalKey;
+  }
+
+  uploadFile(event: any) {
+    const list: FileList = event.target.files;
+    const formData = new FormData();
+    for (let index = 0; index < list.length; index++) {
+      formData.append("files", list[index]);
+    }
+    this.mediaService.uploadFiles(formData).subscribe({
+      next: (value) => {
+        this.page.set(0);
+      },
+    });
   }
 
 }

@@ -1,3 +1,6 @@
+<input hidden type="file" accept="image/*" #uploader (change)="uploadFile($event)" multiple
+    enctype="multipart/form-data" />
+
 <div
     class="sticky top-0 z-10 -mx-2 mb-2 flex items-center justify-between gap-2 border-b bg-background/80 px-2 py-2 backdrop-blur">
     <div class="flex items-center gap-2">
@@ -10,6 +13,17 @@
             (click)="next()">
             <ng-icon hlm size="base" name="lucideChevronRightCircle" />
             Next
+        </button>
+    </div>
+
+    <div class="flex items-center gap-2">
+        <button hlmBtn variant="ghost" size="sm" class="gap-2">
+            <ng-icon hlm size="base" name="lucideCamera" />
+
+        </button>
+
+        <button hlmBtn variant="ghost" size="sm" class="gap-2" (click)="uploader.click()">
+            <ng-icon hlm size="base" name="lucideUpload" />
         </button>
     </div>
 
