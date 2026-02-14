@@ -11,11 +11,11 @@ export class MediaService {
 
     private httpClient = inject(HttpClient);
 
-    getMedias(offset: number, limit: number) {
+    getMedias(page: number, perPage: number) {
         return this.httpClient.get<{ data: MediaListRequestInterface; }>(this.apiUrl + "/list", {
             params: {
-                offset,
-                limit
+                page,
+                perPage
             }
         });
     }

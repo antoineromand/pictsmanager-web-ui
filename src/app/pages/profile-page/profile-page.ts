@@ -3,11 +3,11 @@ import { UserProfileService } from '../../services/user-profile.service';
 import type { UpdateUserProfileRequestInterface, UserProfileInterface } from '../../interfaces/user-profile.interface';
 import { MyProfile } from '../../components/my-profile/my-profile';
 import { toast } from 'ngx-sonner';
-import { MediaGrid } from '../../components/media-grid/media-grid';
+import { MyGallery } from '../../components/my-gallery/my-gallery';
 
 @Component({
   selector: 'profile-page',
-  imports: [MyProfile, MediaGrid],
+  imports: [MyProfile, MyGallery],
   templateUrl: './profile-page.html'
 })
 export class ProfilePage implements OnInit {

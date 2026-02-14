@@ -3,19 +3,24 @@ import type { Media } from '../../interfaces/media.interface';
 import { MediaService } from '../../services/media.service';
 import { environment } from '../../../environments/environment';
 import { toast } from 'ngx-sonner';
+import { HlmButtonImports } from '@spartan-ng/helm/button';
+import { NgIcon, provideIcons } from '@ng-icons/core';
+import { HlmIconImports } from '@spartan-ng/helm/icon';
+import { lucideChevronLeftCircle, lucideChevronRightCircle } from '@ng-icons/lucide';
 
 
 
 @Component({
-  selector: 'media-grida',
-  imports: [],
-  templateUrl: './media-grid.html'
+  selector: 'my-gallery',
+  imports: [HlmButtonImports, NgIcon, HlmIconImports],
+  providers: [provideIcons({ lucideChevronRightCircle, lucideChevronLeftCircle })],
+  templateUrl: './my-gallery.html'
 })
-export class MediaGrid {
+export class MyGallery {
   list = signal<Media[]>([]);
-  offset = signal<number>(0);
+  page = signal<number>(0);
 
-  limit = signal<number>(1);
+  perPage = signal<number>(2);
 
   totalElements = signal<number>(0);
 
@@ -27,10 +32,9 @@ export class MediaGrid {
 
   constructor() {
     effect(() => {
-      console.log("hey");
-      const offset = this.offset();
-      const limit = this.limit();
-      this.mediaService.getMedias(offset, limit).subscribe({
+      const page = this.page();
+      const perPage = this.perPage();
+      this.mediaService.getMedias(page, perPage).subscribe({
         next: (value) => {
           this.list.set(value.data.medias);
           this.totalElements.set(value.data.totalElements);
@@ -40,19 +44,11 @@ export class MediaGrid {
   }
 
   next() {
-    if (this.offset() >= this.totalElements()) {
-      return;
-    }
-    this.offset.update((value) => value + this.limit());
+    this.page.update(v => v + 1);
   }
 
   previous() {
-    if (this.offset() === 0) {
-      return;
-    }
-    this.offset.update(value =>
-      Math.max(0, value - this.limit())
-    );
+    this.page.update(v => Math.max(0, v - 1));
   }
 
   clickOnMedia(media: Media) {
