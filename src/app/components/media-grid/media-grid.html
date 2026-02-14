@@ -1,0 +1,18 @@
+<div class="grid grid-cols-3 gap-1 sm:grid-cols-4 md:grid-cols-5">
+    @for (item of list(); track item.mediaId) {
+    <button type="button" class="relative aspect-square overflow-hidden bg-neutral-100" (click)="clickOnMedia(item)">
+        <img class="h-full w-full object-cover" [src]="getUrl(item.key)" alt="" loading="lazy" />
+
+        @if (selectedMedias().includes(item.mediaId)) {
+        <span
+            class="absolute right-1 top-1 grid h-6 w-6 place-items-center rounded-full bg-blue-600 text-white text-sm shadow">
+            ✓
+        </span>
+        }
+    </button>
+    }
+</div>
+<div>
+    <button [disabled]="offset() === 0" (click)="previous()">Previous</button>
+    <button [disabled]="offset() + limit() === totalElements()" (click)="next()">Next</button>
+</div>
