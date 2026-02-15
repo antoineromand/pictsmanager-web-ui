@@ -7,12 +7,14 @@ import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { HlmIconImports } from '@spartan-ng/helm/icon';
 import { lucideCamera, lucideChevronLeftCircle, lucideChevronRightCircle, lucideUpload } from '@ng-icons/lucide';
+import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
+import { HlmEmptyImports } from '@spartan-ng/helm/empty';
 
 
 
 @Component({
   selector: 'my-gallery',
-  imports: [HlmButtonImports, NgIcon, HlmIconImports],
+  imports: [HlmButtonImports, NgIcon, HlmIconImports, HlmSpinnerImports, HlmEmptyImports],
   providers: [provideIcons({ lucideChevronRightCircle, lucideChevronLeftCircle, lucideCamera, lucideUpload })],
   templateUrl: './my-gallery.html'
 })
@@ -30,16 +32,22 @@ export class MyGallery {
 
   private maxSelectedItems = 2;
 
+  isLoading = signal(false);
+
   constructor() {
     effect(() => {
-      const page = this.page();
-      const perPage = this.perPage();
-      this.mediaService.getMedias(page, perPage).subscribe({
-        next: (value) => {
-          this.list.set(value.data.medias);
-          this.totalElements.set(value.data.totalElements);
-        }
-      });
+      this.loadMedias();
+    });
+  }
+
+  loadMedias() {
+    const page = this.page();
+    const perPage = this.perPage();
+    this.mediaService.getMedias(page, perPage).subscribe({
+      next: (value) => {
+        this.list.set(value.data.medias);
+        this.totalElements.set(value.data.totalElements);
+      }
     });
   }
 
@@ -72,6 +80,7 @@ export class MyGallery {
   }
 
   uploadFile(event: any) {
+    this.isLoading.set(true);
     const list: FileList = event.target.files;
     const formData = new FormData();
     for (let index = 0; index < list.length; index++) {
@@ -80,8 +89,17 @@ export class MyGallery {
     this.mediaService.uploadFiles(formData).subscribe({
       next: (value) => {
         this.page.set(0);
+        this.loadMedias();
+        this.isLoading.set(false);
+      },
+      error: (err) => {
+        this.isLoading.set(false);
       },
     });
+  }
+
+  capture() {
+    this.isLoading.set(true);
   }
 
 }

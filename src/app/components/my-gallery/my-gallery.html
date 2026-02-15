@@ -17,7 +17,7 @@
     </div>
 
     <div class="flex items-center gap-2">
-        <button hlmBtn variant="ghost" size="sm" class="gap-2">
+        <button hlmBtn variant="ghost" size="sm" class="gap-2" (click)="capture()">
             <ng-icon hlm size="base" name="lucideCamera" />
 
         </button>
@@ -33,6 +33,7 @@
     </p>
 </div>
 
+@if (!isLoading()) {
 <div class="grid grid-cols-3 gap-1 sm:grid-cols-4 md:grid-cols-5">
     @for (item of list(); track item.mediaId) {
     <button type="button"
@@ -50,3 +51,14 @@
     </button>
     }
 </div>
+} @else {
+<hlm-empty>
+    <hlm-empty-header>
+        <hlm-empty-media variant="icon">
+            <hlm-spinner />
+        </hlm-empty-media>
+        <div hlmEmptyTitle>Uploading your medias</div>
+        <div hlmEmptyDescription>Please wait while we upload your files. Do not refresh the page.</div>
+    </hlm-empty-header>
+</hlm-empty>
+}
