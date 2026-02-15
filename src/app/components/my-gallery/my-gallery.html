@@ -2,36 +2,39 @@
     enctype="multipart/form-data" />
 
 <div
-    class="sticky top-0 z-10 -mx-2 mb-2 flex items-center justify-between gap-2 border-b bg-background/80 px-2 py-2 backdrop-blur">
-    <div class="flex items-center gap-2">
-        <button [disabled]="page() === 0" hlmBtn variant="ghost" size="sm" class="gap-2" (click)="previous()">
-            <ng-icon hlm size="base" name="lucideChevronLeftCircle" />
-            Previous
-        </button>
+    class="sticky top-0 z-10 -mx-4 sm:-mx-6 lg:-mx-8 mb-3 border-b bg-background/80 px-4 sm:px-6 lg:px-8 py-2 backdrop-blur">
+    <div class="flex flex-wrap items-center justify-between gap-2">
+        <div class="flex items-center gap-2">
+            <button [disabled]="page() === 0" hlmBtn variant="ghost" size="sm" class="gap-2" (click)="previous()">
+                <ng-icon hlm size="base" name="lucideChevronLeftCircle" />
+                <span class="hidden sm:inline">Previous</span>
+            </button>
 
-        <button hlmBtn variant="ghost" size="sm" class="gap-2" [disabled]="(page() + 1) * perPage() >= totalElements()"
-            (click)="next()">
-            <ng-icon hlm size="base" name="lucideChevronRightCircle" />
-            Next
-        </button>
+            <button hlmBtn variant="ghost" size="sm" class="gap-2"
+                [disabled]="(page() + 1) * perPage() >= totalElements()" (click)="next()">
+                <ng-icon hlm size="base" name="lucideChevronRightCircle" />
+                <span class="hidden sm:inline">Next</span>
+            </button>
+        </div>
+
+        <div class="flex items-center gap-2">
+            <app-camera class="hidden sm:block" (captured)="capture($event)"></app-camera>
+
+            <button hlmBtn variant="ghost" size="sm" class="gap-2" (click)="uploader.click()">
+                <ng-icon hlm size="base" name="lucideUpload" />
+                <span class="hidden sm:inline">Upload</span>
+            </button>
+
+            <p class="text-sm text-muted-foreground ml-1 whitespace-nowrap">
+                <span class="font-medium text-foreground">{{ totalElements() }}</span>
+                medias
+            </p>
+        </div>
     </div>
-
-    <div class="flex items-center gap-2">
-        <app-camera (captured)="capture($event)"></app-camera>
-
-        <button hlmBtn variant="ghost" size="sm" class="gap-2" (click)="uploader.click()">
-            <ng-icon hlm size="base" name="lucideUpload" />
-        </button>
-    </div>
-
-    <p class="text-sm text-muted-foreground">
-        <span class="font-medium text-foreground">{{ totalElements() }}</span>
-        medias
-    </p>
 </div>
 
 @if (!isLoading()) {
-<div class="grid grid-cols-3 gap-1 sm:grid-cols-4 md:grid-cols-5">
+<div class="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
     @for (item of list(); track item.mediaId) {
     <button type="button"
         class="group relative aspect-square overflow-hidden rounded-md bg-neutral-100 ring-1 ring-border focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
@@ -55,7 +58,9 @@
             <hlm-spinner />
         </hlm-empty-media>
         <div hlmEmptyTitle>Uploading your medias</div>
-        <div hlmEmptyDescription>Please wait while we upload your files. Do not refresh the page.</div>
+        <div hlmEmptyDescription>
+            Please wait while we upload your files. Do not refresh the page.
+        </div>
     </hlm-empty-header>
 </hlm-empty>
 }

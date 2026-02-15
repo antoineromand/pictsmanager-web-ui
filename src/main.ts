@@ -12,18 +12,27 @@ import { authInterceptor } from './app/interceptors/auth-interceptor';
 @Component({
 	selector: 'app-root',
 	template: `
-	<div class="min-h-screen flex flex-col">
-		<app-header [isAuthenticated]="authenticationService.isAuthenticated()" (closeEvent)="cleanToken($event)"></app-header>
-		<main class="flex-1">
-			<router-outlet></router-outlet>
-		</main>
+	<div class="min-h-dvh flex flex-col overflow-x-hidden">
+	<app-header
+		[isAuthenticated]="authenticationService.isAuthenticated()"
+		(closeEvent)="cleanToken($event)"
+		class="shrink-0"
+	></app-header>
 
-		<app-footer></app-footer>
-		<hlm-toaster 
+	<main class="flex-1 w-full">
+		<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+		<router-outlet></router-outlet>
+		</div>
+	</main>
+
+	<app-footer class="shrink-0"></app-footer>
+
+	<hlm-toaster
+		class="pb-[env(safe-area-inset-bottom)] md:pb-0"
 		position="bottom-right"
 		expand
 		richColors
-		/>
+	/>
 	</div>
   `,
 	imports: [RouterOutlet, AppHeader, AppFooter, HlmToasterImports],

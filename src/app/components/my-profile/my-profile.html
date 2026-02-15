@@ -1,7 +1,5 @@
 <section class="w-full">
     <div class="relative w-full overflow-hidden rounded-2xl border border-neutral-200 bg-neutral-100">
-
-        <!-- COVER -->
         @if (userProfile()?.coverPicture) {
         <img [src]="userProfile()?.coverPicture" alt="Cover" class="h-32 w-full object-cover sm:h-40" />
         } @else {
@@ -9,29 +7,25 @@
             class="h-32 w-full object-cover sm:h-40" />
         }
 
-        <!-- Gradient overlay -->
         <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/30 via-black/10 to-transparent">
         </div>
 
-        <!-- ACTION BUTTON -->
-        <div class="absolute right-3 top-3">
+        <div class="absolute right-3 top-3 sm:right-4 sm:top-4">
             @if (mode() === "READ") {
             <button (click)="switchMode('UPDATE')"
-                class="inline-flex h-8 items-center rounded-lg bg-white/90 px-3 text-sm font-medium text-neutral-900 shadow-sm ring-1 ring-black/5 backdrop-blur hover:bg-white">
+                class="inline-flex h-9 sm:h-8 items-center rounded-lg bg-white/90 px-3 text-sm font-medium text-neutral-900 shadow-sm ring-1 ring-black/5 backdrop-blur hover:bg-white">
                 Modifier
             </button>
             } @else {
             <button (click)="switchMode('READ')"
-                class="inline-flex h-8 items-center rounded-lg bg-white/90 px-3 text-sm font-medium text-neutral-900 shadow-sm ring-1 ring-black/5 backdrop-blur hover:bg-white">
+                class="inline-flex h-9 sm:h-8 items-center rounded-lg bg-white/90 px-3 text-sm font-medium text-neutral-900 shadow-sm ring-1 ring-black/5 backdrop-blur hover:bg-white">
                 Voir le profil
             </button>
             }
         </div>
 
-        <!-- CONTENT -->
         <div class="relative px-4 pb-3 sm:px-5">
-            <div class="-mt-6 flex flex-col gap-4 sm:-mt-8 sm:flex-row sm:items-end sm:gap-6">
-
+            <div class="-mt-6 flex flex-col items-center gap-4 sm:-mt-8 sm:flex-row sm:items-end sm:gap-6">
                 <!-- AVATAR -->
                 <div class="shrink-0">
                     <div class="relative">
@@ -49,11 +43,9 @@
                     </div>
                 </div>
 
-                <!-- INFO CARD -->
-                <div class="flex-1 rounded-xl bg-white/95 p-3 shadow-sm ring-1 ring-black/5 backdrop-blur sm:p-4">
-
+                <div
+                    class="flex-1 w-full rounded-xl bg-white/95 p-3 shadow-sm ring-1 ring-black/5 backdrop-blur sm:p-4">
                     @if (mode() === "READ") {
-
                     <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                         <div class="min-w-0">
                             <h1 class="truncate text-xl font-semibold text-neutral-900">
@@ -64,8 +56,7 @@
                             </p>
                         </div>
 
-                        <!-- STATS -->
-                        <div class="flex shrink-0 gap-4 text-sm">
+                        <div class="flex shrink-0 flex-wrap justify-center sm:justify-end gap-x-4 gap-y-1 text-sm">
                             <div class="text-center">
                                 <div class="font-semibold text-neutral-900">128</div>
                                 <div class="text-neutral-500">posts</div>
@@ -76,11 +67,9 @@
                             </div>
                         </div>
                     </div>
-
                     } @else {
-
                     <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                        <div>
+                        <div class="min-w-0">
                             <h1 class="truncate text-xl font-semibold text-neutral-900">
                                 @{{ userProfile()?.username }}
                             </h1>
@@ -89,7 +78,7 @@
                             </p>
                         </div>
 
-                        <div class="flex shrink-0 gap-4 text-sm">
+                        <div class="flex shrink-0 flex-wrap justify-center sm:justify-end gap-x-4 gap-y-1 text-sm">
                             <div class="text-center">
                                 <div class="font-semibold text-neutral-900">128</div>
                                 <div class="text-neutral-500">posts</div>
@@ -101,7 +90,6 @@
                         </div>
                     </div>
 
-                    <!-- FORM -->
                     <form class="mt-4 grid gap-3 sm:grid-cols-2" [formGroup]="updateForm" (ngSubmit)="update()">
                         <div class="sm:col-span-2">
                             <label class="mb-1 block text-sm font-medium text-neutral-800">
@@ -111,7 +99,7 @@
                                 class="w-full resize-none rounded-lg border border-neutral-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-neutral-200"></textarea>
                         </div>
 
-                        <div>
+                        <div class="min-w-0">
                             <label class="mb-1 block text-sm font-medium text-neutral-800">
                                 Photo de profil
                             </label>
@@ -119,7 +107,7 @@
                                 class="block w-full rounded-lg border border-neutral-200 text-sm file:mr-3 file:rounded-md file:border-0 file:bg-neutral-900 file:px-3 file:py-1.5 file:text-white" />
                         </div>
 
-                        <div>
+                        <div class="min-w-0">
                             <label class="mb-1 block text-sm font-medium text-neutral-800">
                                 Cover
                             </label>
@@ -138,7 +126,6 @@
                             </button>
                         </div>
                     </form>
-
                     }
                 </div>
             </div>

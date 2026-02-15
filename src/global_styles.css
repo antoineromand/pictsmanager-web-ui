@@ -13,11 +13,11 @@ body {
 }
 
 .bg-main-color {
-    --main-color-bg: #fdf5fe !important;
+    --main-color-bg: #F9F5E3 !important;
 }
 
 :root {
-    --main-color-bg: #fdf5fe;
+    --main-color-bg: #F9F5E3;
     color-scheme: light;
 
     --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
