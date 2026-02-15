@@ -53,6 +53,9 @@
       ],
       "@spartan-ng/helm/spinner": [
         "./libs/ui/spinner/src/index.ts"
+      ],
+      "@spartan-ng/helm/popover": [
+        "./libs/ui/popover/src/index.ts"
       ]
     }
   },

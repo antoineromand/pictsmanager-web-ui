@@ -9,12 +9,13 @@ import { HlmIconImports } from '@spartan-ng/helm/icon';
 import { lucideCamera, lucideChevronLeftCircle, lucideChevronRightCircle, lucideUpload } from '@ng-icons/lucide';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import { HlmEmptyImports } from '@spartan-ng/helm/empty';
+import { Camera } from "../camera/camera";
 
 
 
 @Component({
   selector: 'my-gallery',
-  imports: [HlmButtonImports, NgIcon, HlmIconImports, HlmSpinnerImports, HlmEmptyImports],
+  imports: [HlmButtonImports, NgIcon, HlmIconImports, HlmSpinnerImports, HlmEmptyImports, Camera],
   providers: [provideIcons({ lucideChevronRightCircle, lucideChevronLeftCircle, lucideCamera, lucideUpload })],
   templateUrl: './my-gallery.html'
 })
@@ -22,7 +23,7 @@ export class MyGallery {
   list = signal<Media[]>([]);
   page = signal<number>(0);
 
-  perPage = signal<number>(2);
+  perPage = signal<number>(5);
 
   totalElements = signal<number>(0);
 
@@ -86,6 +87,16 @@ export class MyGallery {
     for (let index = 0; index < list.length; index++) {
       formData.append("files", list[index]);
     }
+    this.sendFiles(formData);
+  }
+
+  capture(file: File) {
+    const formData = new FormData();
+    formData.append("files", file);
+    this.sendFiles(formData);
+  }
+
+  sendFiles(formData: FormData) {
     this.mediaService.uploadFiles(formData).subscribe({
       next: (value) => {
         this.page.set(0);
@@ -96,10 +107,6 @@ export class MyGallery {
         this.isLoading.set(false);
       },
     });
-  }
-
-  capture() {
-    this.isLoading.set(true);
   }
 
 }

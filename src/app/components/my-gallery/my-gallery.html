@@ -17,10 +17,7 @@
     </div>
 
     <div class="flex items-center gap-2">
-        <button hlmBtn variant="ghost" size="sm" class="gap-2" (click)="capture()">
-            <ng-icon hlm size="base" name="lucideCamera" />
-
-        </button>
+        <app-camera (captured)="capture($event)"></app-camera>
 
         <button hlmBtn variant="ghost" size="sm" class="gap-2" (click)="uploader.click()">
             <ng-icon hlm size="base" name="lucideUpload" />
