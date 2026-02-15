@@ -1,32 +1,41 @@
 <input hidden type="file" accept="image/*" #uploader (change)="uploadFile($event)" multiple
     enctype="multipart/form-data" />
 
-<div
-    class="sticky top-0 z-10 -mx-4 sm:-mx-6 lg:-mx-8 mb-3 border-b bg-background/80 px-4 sm:px-6 lg:px-8 py-2 backdrop-blur">
+<div class="sticky top-0 z-10 -mx-4 mb-3 border-b border-neutral-200 bg-white/80 px-4 py-2 backdrop-blur
+         sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
     <div class="flex flex-wrap items-center justify-between gap-2">
         <div class="flex items-center gap-2">
-            <button [disabled]="page() === 0" hlmBtn variant="ghost" size="sm" class="gap-2" (click)="previous()">
+            <button [disabled]="page() === 0" hlmBtn variant="ghost" size="sm" class="gap-2 rounded-lg"
+                (click)="previous()">
                 <ng-icon hlm size="base" name="lucideChevronLeftCircle" />
                 <span class="hidden sm:inline">Previous</span>
             </button>
 
-            <button hlmBtn variant="ghost" size="sm" class="gap-2"
+            <button hlmBtn variant="ghost" size="sm" class="gap-2 rounded-lg"
                 [disabled]="(page() + 1) * perPage() >= totalElements()" (click)="next()">
                 <ng-icon hlm size="base" name="lucideChevronRightCircle" />
                 <span class="hidden sm:inline">Next</span>
             </button>
         </div>
 
+        @if (labelFor().length > 0) {
         <div class="flex items-center gap-2">
-            <app-camera class="hidden sm:block" (captured)="capture($event)"></app-camera>
+            <button hlmBtn variant="ghost" size="sm" class="gap-2 rounded-lg" (click)="useUrlForLabel()">
+                Use as {{ labelFor() }}
+            </button>
+        </div>
+        }
 
-            <button hlmBtn variant="ghost" size="sm" class="gap-2" (click)="uploader.click()">
+        <div class="flex items-center gap-2">
+            <app-camera class="hidden sm:block"></app-camera>
+
+            <button hlmBtn variant="ghost" size="sm" class="gap-2 rounded-lg" (click)="uploader.click()">
                 <ng-icon hlm size="base" name="lucideUpload" />
                 <span class="hidden sm:inline">Upload</span>
             </button>
 
-            <p class="text-sm text-muted-foreground ml-1 whitespace-nowrap">
-                <span class="font-medium text-foreground">{{ totalElements() }}</span>
+            <p class="ml-1 whitespace-nowrap text-sm text-neutral-500">
+                <span class="font-semibold text-neutral-900">{{ totalElements() }}</span>
                 medias
             </p>
         </div>
@@ -36,15 +45,19 @@
 @if (!isLoading()) {
 <div class="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
     @for (item of list(); track item.mediaId) {
-    <button type="button"
-        class="group relative aspect-square overflow-hidden rounded-md bg-neutral-100 ring-1 ring-border focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-        (click)="clickOnMedia(item)">
-        <img class="h-full w-full object-cover transition-transform duration-200 group-hover:scale-[1.02]"
+    <button type="button" class="group relative aspect-square overflow-hidden rounded-xl bg-neutral-100 ring-1 ring-neutral-200
+               shadow-sm transition
+               hover:shadow-md hover:ring-neutral-300
+               focus:outline-none focus-visible:ring-2 focus-visible:ring-[#6366F1]" (click)="clickOnMedia(item)">
+        <img class="h-full w-full object-cover transition-transform duration-200 group-hover:scale-[1.03]"
             [src]="getUrl(item.key)" alt="" loading="lazy" />
+
+        <div class="pointer-events-none absolute inset-0 opacity-0 transition group-hover:opacity-100 bg-black/10">
+        </div>
 
         @if (selectedMedias().includes(item.mediaId)) {
         <span
-            class="absolute right-1 top-1 grid h-6 w-6 place-items-center rounded-full bg-blue-600 text-sm text-white shadow">
+            class="absolute right-1 top-1 grid h-6 w-6 place-items-center rounded-full bg-[#6366F1] text-sm text-white shadow">
             ✓
         </span>
         }
@@ -58,9 +71,7 @@
             <hlm-spinner />
         </hlm-empty-media>
         <div hlmEmptyTitle>Uploading your medias</div>
-        <div hlmEmptyDescription>
-            Please wait while we upload your files. Do not refresh the page.
-        </div>
+        <div hlmEmptyDescription>Please wait while we upload your files. Do not refresh the page.</div>
     </hlm-empty-header>
 </hlm-empty>
 }

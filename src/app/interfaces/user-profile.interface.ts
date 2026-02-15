@@ -12,9 +12,9 @@ export interface GetUserProfileResponseInterface {
 }
 
 export interface UserPublicProfile {
-    description: string | null | undefined,
-    picture: string | null | undefined,
-    coverPicture: string | null | undefined,
+    description: string | null,
+    picture: string | null,
+    coverPicture: string | null,
 }
 
 export interface UpdateUserProfileRequestInterface {

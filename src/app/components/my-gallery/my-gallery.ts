@@ -1,4 +1,4 @@
-import { Component, effect, inject, input, signal, type OnInit } from '@angular/core';
+import { Component, effect, inject, input, output, signal, type OnInit } from '@angular/core';
 import type { Media } from '../../interfaces/media.interface';
 import { MediaService } from '../../services/media.service';
 import { environment } from '../../../environments/environment';
@@ -31,9 +31,13 @@ export class MyGallery {
 
   private mediaService = inject(MediaService);
 
-  private maxSelectedItems = 2;
+  maxSelectedItems = input<number>(2);
 
   isLoading = signal(false);
+
+  labelFor = input<string>("");
+
+  urlOutPutEvent = output<string>();
 
   constructor() {
     effect(() => {
@@ -63,14 +67,14 @@ export class MyGallery {
   clickOnMedia(media: Media) {
     const id = media.mediaId;
 
-    if (this.selectedMedias().length === this.maxSelectedItems && !this.selectedMedias().includes(media.mediaId)) {
+    if (this.selectedMedias().length === this.maxSelectedItems() && !this.selectedMedias().includes(media.mediaId)) {
       toast.info("You have selected the maximum number of media items.");
     }
 
     this.selectedMedias.update(s =>
       s.includes(id)
         ? s.filter(x => x !== id)
-        : s.length < this.maxSelectedItems
+        : s.length < this.maxSelectedItems()
           ? [...s, id]
           : s
     );
@@ -108,5 +112,17 @@ export class MyGallery {
       },
     });
   }
+
+  useUrlForLabel() {
+    if (this.selectedMedias().length === this.maxSelectedItems()) {
+      const selectedMedia = this.selectedMedias()?.[0];
+      const element = this.list().find((el) => el.mediaId === selectedMedia);
+      if (element) {
+        this.urlOutPutEvent.emit(element.key);
+      }
+    }
+  }
+
+  
 
 }

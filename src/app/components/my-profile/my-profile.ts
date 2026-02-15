@@ -8,10 +8,13 @@ import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmIconImports } from '@spartan-ng/helm/icon';
 import { provideIcons } from '@ng-icons/core';
 import { lucideLock, lucideLockOpen } from '@ng-icons/lucide';
+import { MyGallery } from '../my-gallery/my-gallery';
+import { toast } from 'ngx-sonner';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'my-profile',
-  imports: [HlmTextareaImports, HlmLabelImports, HlmInputImports, HlmButtonImports, HlmIconImports, ReactiveFormsModule],
+  imports: [HlmTextareaImports, HlmLabelImports, HlmInputImports, HlmButtonImports, HlmIconImports, ReactiveFormsModule, MyGallery],
   providers: [provideIcons({ lucideLock, lucideLockOpen })],
   templateUrl: './my-profile.html'
 })
@@ -22,12 +25,14 @@ export class MyProfile {
 
   updateFormOutput = output<UpdateUserProfileRequestInterface>();
 
+  updatingPicture = signal<boolean>(false);
+
+  labelForPictureField = signal<"profilePicture" | "coverPicture">("profilePicture");
+
   updateForm = new FormGroup({
     description: new FormControl<string>(''),
-    profilePicture: new FormControl<File | null>(null),
-    coverPicture: new FormControl<File | null>(null),
-    profilePictureUrl: new FormControl<string>(''),
-    coverPictureUrl: new FormControl<string>('')
+    profilePicture: new FormControl<string | null>(null),
+    coverPicture: new FormControl<string | null>(null),
   });
 
   constructor() {
@@ -37,21 +42,50 @@ export class MyProfile {
 
       this.updateForm.patchValue({
         description: profile.description ?? '',
-        profilePictureUrl: profile.picture ?? null,
-        coverPictureUrl: profile.coverPicture ?? null,
-        profilePicture: null,
-        coverPicture: null,
+        profilePicture: profile.picture,
+        coverPicture: profile.coverPicture,
       }, { emitEvent: false });
     });
+  }
+
+  getBaseUrl(type: "profile" | "cover") {
+    return environment.mediaUrl + (type === "profile" ? this.userProfile()?.picture : this.userProfile()?.coverPicture);
   }
 
   switchMode(mode: "READ" | "UPDATE") {
     this.mode.set(mode);
   }
 
+  openGallery(label: "profilePicture" | "coverPicture") {
+    this.labelForPictureField.set(label);
+    this.updatingPicture.set(true);
+  }
+
+  catchUrl(url: string) {
+    this.updatingPicture.set(false);
+    let message = "Image chosen for ";
+    if (this.labelForPictureField() === "profilePicture") {
+      this.updateForm.controls.profilePicture.setValue(url);
+      message += "profile picture";
+    }
+    if (this.labelForPictureField() === "coverPicture") {
+      this.updateForm.controls.coverPicture.setValue(url);
+      message += "cover picture";
+    }
+    this.update();
+    toast.success(message);
+  }
+
   update() {
     const form = this.updateForm.value;
-    this.updateFormOutput.emit({ payload: { description: form.description, picture: form.profilePictureUrl, coverPicture: form.coverPictureUrl } });
+    this.updateFormOutput.emit({
+      payload:
+      {
+        description: form.description as string | null,
+        picture: form.profilePicture as string | null,
+        coverPicture: form.coverPicture as string | null
+      }
+    });
   }
 
 

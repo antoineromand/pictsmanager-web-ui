@@ -25,7 +25,6 @@ export class ProfilePage implements OnInit {
   }
 
   updateUserProfil(data: UpdateUserProfileRequestInterface) {
-    console.log(data);
     this.userProfileService.updateUserProfil(data).subscribe({
       next: (response) => {
         this.userProfil.update(current => {

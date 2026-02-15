@@ -1,40 +1,38 @@
 <section class="w-full">
     <div class="relative w-full overflow-hidden rounded-2xl border border-neutral-200 bg-neutral-100">
         @if (userProfile()?.coverPicture) {
-        <img [src]="userProfile()?.coverPicture" alt="Cover" class="h-32 w-full object-cover sm:h-40" />
+        <img [src]="getBaseUrl('cover')" alt="Cover" class="h-32 w-full object-cover sm:h-40" />
         } @else {
         <img src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png" alt="Cover"
             class="h-32 w-full object-cover sm:h-40" />
         }
 
-        <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/30 via-black/10 to-transparent">
+        <div class="pointer-events-none absolute inset-0 bg-linear-to-t from-black/30 via-black/10 to-transparent">
         </div>
 
         <div class="absolute right-3 top-3 sm:right-4 sm:top-4">
             @if (mode() === "READ") {
             <button (click)="switchMode('UPDATE')"
-                class="inline-flex h-9 sm:h-8 items-center rounded-lg bg-white/90 px-3 text-sm font-medium text-neutral-900 shadow-sm ring-1 ring-black/5 backdrop-blur hover:bg-white">
-                Modifier
+                class="inline-flex h-9 items-center rounded-lg bg-white/90 px-3 text-sm font-medium text-neutral-900 shadow-sm ring-1 ring-black/5 backdrop-blur hover:bg-white">
+                Update
             </button>
             } @else {
             <button (click)="switchMode('READ')"
-                class="inline-flex h-9 sm:h-8 items-center rounded-lg bg-white/90 px-3 text-sm font-medium text-neutral-900 shadow-sm ring-1 ring-black/5 backdrop-blur hover:bg-white">
-                Voir le profil
+                class="inline-flex h-9 items-center rounded-lg bg-white/90 px-3 text-sm font-medium text-neutral-900 shadow-sm ring-1 ring-black/5 backdrop-blur hover:bg-white">
+                Profile
             </button>
             }
         </div>
 
         <div class="relative px-4 pb-3 sm:px-5">
             <div class="-mt-6 flex flex-col items-center gap-4 sm:-mt-8 sm:flex-row sm:items-end sm:gap-6">
-                <!-- AVATAR -->
                 <div class="shrink-0">
                     <div class="relative">
                         <div class="h-20 w-20 overflow-hidden rounded-xl bg-white ring-4 ring-white sm:h-24 sm:w-24">
-                            <img [src]="userProfile()?.picture ?? 'https://i.pravatar.cc/300'" alt="Avatar utilisateur"
+                            <img [src]="getBaseUrl('profile') ?? 'https://i.pravatar.cc/300'" alt="Avatar utilisateur"
                                 class="h-full w-full object-cover" />
                         </div>
 
-                        <!-- PUBLIC / PRIVATE BADGE -->
                         <div class="absolute -bottom-1 -right-1 grid h-8 w-8 place-items-center rounded-full bg-white shadow-sm ring-1 ring-neutral-200"
                             [attr.title]="userProfile()?.isPublic ? 'Profil public' : 'Profil privé'">
                             <ng-icon [name]="userProfile()?.isPublic ? 'lucideLockOpen' : 'lucideLock'" class="h-4 w-4"
@@ -44,19 +42,18 @@
                 </div>
 
                 <div
-                    class="flex-1 w-full rounded-xl bg-white/95 p-3 shadow-sm ring-1 ring-black/5 backdrop-blur sm:p-4">
+                    class="w-full flex-1 rounded-xl bg-white/95 p-3 shadow-sm ring-1 ring-black/5 backdrop-blur sm:p-4">
                     @if (mode() === "READ") {
                     <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                         <div class="min-w-0">
-                            <h1 class="truncate text-xl font-semibold text-neutral-900">
-                                @{{ userProfile()?.username }}
+                            <h1 class="truncate text-xl font-semibold text-neutral-900">@{{ userProfile()?.username }}
                             </h1>
                             <p class="mt-1 line-clamp-2 text-sm text-neutral-600">
                                 {{ userProfile()?.description ?? '' }}
                             </p>
                         </div>
 
-                        <div class="flex shrink-0 flex-wrap justify-center sm:justify-end gap-x-4 gap-y-1 text-sm">
+                        <div class="flex shrink-0 flex-wrap justify-center gap-x-4 gap-y-1 text-sm sm:justify-end">
                             <div class="text-center">
                                 <div class="font-semibold text-neutral-900">128</div>
                                 <div class="text-neutral-500">posts</div>
@@ -70,15 +67,12 @@
                     } @else {
                     <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                         <div class="min-w-0">
-                            <h1 class="truncate text-xl font-semibold text-neutral-900">
-                                @{{ userProfile()?.username }}
+                            <h1 class="truncate text-xl font-semibold text-neutral-900">@{{ userProfile()?.username }}
                             </h1>
-                            <p class="mt-1 text-sm text-neutral-600">
-                                Modifie ta bio et tes images
-                            </p>
+                            <p class="mt-1 text-sm text-neutral-600">Update your description and your pictures.</p>
                         </div>
 
-                        <div class="flex shrink-0 flex-wrap justify-center sm:justify-end gap-x-4 gap-y-1 text-sm">
+                        <div class="flex shrink-0 flex-wrap justify-center gap-x-4 gap-y-1 text-sm sm:justify-end">
                             <div class="text-center">
                                 <div class="font-semibold text-neutral-900">128</div>
                                 <div class="text-neutral-500">posts</div>
@@ -92,37 +86,65 @@
 
                     <form class="mt-4 grid gap-3 sm:grid-cols-2" [formGroup]="updateForm" (ngSubmit)="update()">
                         <div class="sm:col-span-2">
-                            <label class="mb-1 block text-sm font-medium text-neutral-800">
-                                Bio
-                            </label>
+                            <label class="mb-1 block text-sm font-medium text-neutral-800">Description</label>
                             <textarea rows="3" formControlName="description"
                                 class="w-full resize-none rounded-lg border border-neutral-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-neutral-200"></textarea>
                         </div>
 
-                        <div class="min-w-0">
-                            <label class="mb-1 block text-sm font-medium text-neutral-800">
-                                Photo de profil
-                            </label>
-                            <input type="file" formControlName="profilePicture"
-                                class="block w-full rounded-lg border border-neutral-200 text-sm file:mr-3 file:rounded-md file:border-0 file:bg-neutral-900 file:px-3 file:py-1.5 file:text-white" />
+                        <div class="sm:col-span-2">
+                            <div class="grid grid-cols-2 gap-3 sm:flex sm:flex-wrap sm:gap-4">
+                                <button type="button" class="group flex h-28 w-full flex-col items-center justify-center gap-2 rounded-2xl
+                                    bg-white ring-1 ring-black/10 shadow-sm transition
+                                    hover:shadow-md hover:ring-black/20
+                                    focus:outline-none focus-visible:ring-2 focus-visible:ring-[#6366F1] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F9F5E3]
+                                    active:scale-[0.98]
+                                    sm:w-32" aria-label="Photo de profil" (click)="openGallery('profilePicture')">
+                                    <svg class="h-8 w-8 text-neutral-700 transition group-hover:text-[#6366F1]"
+                                        viewBox="0 0 24 24" fill="none">
+                                        <path d="M4 7h3l2-2h6l2 2h3v14H4V7Z" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round" />
+                                        <path d="M12 18a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" stroke="currentColor"
+                                            stroke-width="2" />
+                                    </svg>
+
+                                    <span
+                                        class="text-xs font-semibold text-neutral-800 group-hover:text-[#6366F1]">Profile
+                                        picture</span>
+                                </button>
+
+                                <input hidden type="text" formControlName="profilePicture" />
+
+                                <button type="button" class="group flex h-28 w-full flex-col items-center justify-center gap-2 rounded-2xl
+                           border-2 border-dashed border-black/20 bg-white/50 backdrop-blur-sm shadow-sm transition
+                           hover:border-[#6366F1] hover:bg-white/80
+                           focus:outline-none focus-visible:ring-2 focus-visible:ring-[#6366F1] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F9F5E3]
+                           active:scale-[0.98]
+                           sm:w-32" aria-label="Image de couverture" (click)="openGallery('coverPicture')">
+                                    <svg class="h-8 w-8 text-neutral-700 transition group-hover:text-[#6366F1]"
+                                        viewBox="0 0 24 24" fill="none">
+                                        <path d="M4 7h3l2-2h6l2 2h3v14H4V7Z" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round" />
+                                        <path d="M7 16l3-3 3 3 2-2 2 2" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+
+                                    <span
+                                        class="text-xs font-semibold text-neutral-800 group-hover:text-[#6366F1]">Cover
+                                        Picture</span>
+                                </button>
+
+                                <input hidden type="text" formControlName="coverPicture" />
+                            </div>
                         </div>
 
-                        <div class="min-w-0">
-                            <label class="mb-1 block text-sm font-medium text-neutral-800">
-                                Cover
-                            </label>
-                            <input type="file" formControlName="coverPicture"
-                                class="block w-full rounded-lg border border-neutral-200 text-sm file:mr-3 file:rounded-md file:border-0 file:bg-neutral-900 file:px-3 file:py-1.5 file:text-white" />
-                        </div>
-
-                        <div class="sm:col-span-2 flex justify-end gap-2 pt-1">
+                        <div class="flex justify-end gap-2 pt-1 sm:col-span-2">
                             <button type="button" (click)="switchMode('READ')"
                                 class="h-9 rounded-lg border border-neutral-200 px-4 text-sm hover:bg-neutral-50">
-                                Annuler
+                                Cancel
                             </button>
                             <button type="submit"
                                 class="h-9 rounded-lg bg-neutral-900 px-4 text-sm font-medium text-white hover:bg-neutral-800">
-                                Enregistrer
+                                Save
                             </button>
                         </div>
                     </form>
@@ -131,4 +153,20 @@
             </div>
         </div>
     </div>
+
+    @if (updatingPicture() && mode() === "UPDATE") {
+    <div class="mt-4 overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm">
+        <div class="border-b border-neutral-200 bg-white/70 px-4 py-3 backdrop-blur">
+            <div class="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+                <div class="text-sm font-semibold text-neutral-900">Galerie</div>
+                <div class="text-xs text-neutral-500">Choisis un média ou ajoute une nouvelle image</div>
+            </div>
+        </div>
+
+        <div class="p-4 sm:p-5">
+            <my-gallery [maxSelectedItems]="1" [labelFor]="labelForPictureField()"
+                (urlOutPutEvent)="catchUrl($event)"></my-gallery>
+        </div>
+    </div>
+    }
 </section>
