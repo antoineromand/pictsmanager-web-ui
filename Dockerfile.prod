@@ -1,0 +1,19 @@
+# Install dependencies and build angular project
+
+FROM node:25-alpine AS build
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm ci
+COPY . .
+RUN npm run build:prod
+
+# Copy the build into an nginx container
+
+FROM nginx:alpine-perl AS production
+RUN rm -rf /usr/share/nginx/html/*
+COPY --from=build /app/dist/pictsmanager-ui/browser /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
+
+
