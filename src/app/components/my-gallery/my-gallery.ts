@@ -95,9 +95,12 @@ export class MyGallery {
   }
 
   capture(file: File) {
+    console.log(file);
     const formData = new FormData();
     formData.append("files", file);
+    console.log("before sendFiles");
     this.sendFiles(formData);
+    console.log("after sendfiles");
   }
 
   sendFiles(formData: FormData) {
@@ -123,6 +126,6 @@ export class MyGallery {
     }
   }
 
-  
+
 
 }

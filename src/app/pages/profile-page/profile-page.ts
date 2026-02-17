@@ -3,10 +3,12 @@ import { UserProfileService } from '../../services/user-profile.service';
 import type { UpdateUserProfileRequestInterface, UserProfileInterface } from '../../interfaces/user-profile.interface';
 import { MyProfile } from '../../components/my-profile/my-profile';
 import { toast } from 'ngx-sonner';
+import { HlmItemImports } from '@spartan-ng/helm/item';
+import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 
 @Component({
   selector: 'profile-page',
-  imports: [MyProfile],
+  imports: [MyProfile, HlmItemImports, HlmSpinnerImports],
   templateUrl: './profile-page.html'
 })
 export class ProfilePage implements OnInit {
@@ -14,6 +16,9 @@ export class ProfilePage implements OnInit {
   userProfileService = inject(UserProfileService);
 
   userProfil = signal<UserProfileInterface | null>(null);
+
+  isProcessing = signal<boolean>(false);
+
 
   ngOnInit(): void {
     this.userProfileService.getUserProfil().subscribe({
@@ -23,7 +28,7 @@ export class ProfilePage implements OnInit {
     });
   }
 
-  updateUserProfil(data: UpdateUserProfileRequestInterface) {
+  update(data: UpdateUserProfileRequestInterface) {
     this.userProfileService.updateUserProfil(data).subscribe({
       next: (response) => {
         this.userProfil.update(current => {
@@ -38,8 +43,14 @@ export class ProfilePage implements OnInit {
         });
 
         toast.success("Your profile has been updated.");
+        this.isProcessing.set(false);
       }
     });
+  }
+
+  updateUserProfil(data: UpdateUserProfileRequestInterface) {
+    this.isProcessing.set(true);
+    setTimeout(() => this.update(data), 1000);
   }
 
 }

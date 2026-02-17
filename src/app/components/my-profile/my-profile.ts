@@ -29,6 +29,7 @@ export class MyProfile {
 
   labelForPictureField = signal<"profilePicture" | "coverPicture">("profilePicture");
 
+
   updateForm = new FormGroup({
     description: new FormControl<string>(''),
     profilePicture: new FormControl<string | null>(null),

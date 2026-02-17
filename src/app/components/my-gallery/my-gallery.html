@@ -20,14 +20,15 @@
 
         @if (labelFor().length > 0) {
         <div class="flex items-center gap-2">
-            <button hlmBtn variant="ghost" size="sm" class="gap-2 rounded-lg" (click)="useUrlForLabel()">
+            <button hlmBtn variant="ghost" size="sm" class="gap-2 rounded-lg"
+                [disabled]="selectedMedias().length !== maxSelectedItems()" (click)="useUrlForLabel()">
                 Use as {{ labelFor() }}
             </button>
         </div>
         }
 
         <div class="flex items-center gap-2">
-            <app-camera class="hidden sm:block"></app-camera>
+            <app-camera class="hidden sm:block" (captured)="capture($event)"></app-camera>
 
             <button hlmBtn variant="ghost" size="sm" class="gap-2 rounded-lg" (click)="uploader.click()">
                 <ng-icon hlm size="base" name="lucideUpload" />
