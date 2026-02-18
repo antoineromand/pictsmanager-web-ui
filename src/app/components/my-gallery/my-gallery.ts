@@ -27,7 +27,7 @@ export class MyGallery {
 
   totalElements = signal<number>(0);
 
-  selectedMedias = signal<String[]>([]);
+  selectedMedias = signal<string[]>([]);
 
   private mediaService = inject(MediaService);
 
@@ -37,7 +37,7 @@ export class MyGallery {
 
   labelFor = input<string>("");
 
-  urlOutPutEvent = output<string>();
+  urlOutPutEvent = output<string[]>();
 
   constructor() {
     effect(() => {
@@ -78,6 +78,8 @@ export class MyGallery {
           ? [...s, id]
           : s
     );
+
+    this.urlOutPutEvent.emit(this.selectedMedias());
   }
 
   getUrl(originalKey: string) {
@@ -95,12 +97,9 @@ export class MyGallery {
   }
 
   capture(file: File) {
-    console.log(file);
     const formData = new FormData();
     formData.append("files", file);
-    console.log("before sendFiles");
     this.sendFiles(formData);
-    console.log("after sendfiles");
   }
 
   sendFiles(formData: FormData) {
@@ -121,7 +120,7 @@ export class MyGallery {
       const selectedMedia = this.selectedMedias()?.[0];
       const element = this.list().find((el) => el.mediaId === selectedMedia);
       if (element) {
-        this.urlOutPutEvent.emit(element.key);
+        this.urlOutPutEvent.emit([element.key]);
       }
     }
   }

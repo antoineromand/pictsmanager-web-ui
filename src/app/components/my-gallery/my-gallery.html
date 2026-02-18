@@ -1,9 +1,17 @@
 <input hidden type="file" accept="image/*" #uploader (change)="uploadFile($event)" multiple
     enctype="multipart/form-data" />
 
-<div class="sticky top-0 z-10 -mx-4 mb-3 border-b border-neutral-200 bg-white/80 px-4 py-2 backdrop-blur
-         sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
-    <div class="flex flex-wrap items-center justify-between gap-2">
+<!-- Sticky header -->
+<div class="sticky top-0 z-10
+         -mx-3 sm:-mx-4 lg:-mx-5
+         mb-3 border-b border-neutral-200
+         bg-white/80 px-3 py-2
+         backdrop-blur
+         sm:px-4 lg:px-5">
+
+    <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+
+        <!-- Pagination -->
         <div class="flex items-center gap-2">
             <button [disabled]="page() === 0" hlmBtn variant="ghost" size="sm" class="gap-2 rounded-lg"
                 (click)="previous()">
@@ -18,6 +26,7 @@
             </button>
         </div>
 
+        <!-- Label action -->
         @if (labelFor().length > 0) {
         <div class="flex items-center gap-2">
             <button hlmBtn variant="ghost" size="sm" class="gap-2 rounded-lg"
@@ -27,52 +36,82 @@
         </div>
         }
 
-        <div class="flex items-center gap-2">
-            <app-camera class="hidden sm:block" (captured)="capture($event)"></app-camera>
+        <!-- Upload / Camera -->
+        <div class="flex flex-wrap items-center gap-2 justify-between sm:justify-end">
+
+            <app-camera class="hidden sm:block" (captured)="capture($event)">
+            </app-camera>
 
             <button hlmBtn variant="ghost" size="sm" class="gap-2 rounded-lg" (click)="uploader.click()">
                 <ng-icon hlm size="base" name="lucideUpload" />
                 <span class="hidden sm:inline">Upload</span>
             </button>
 
-            <p class="ml-1 whitespace-nowrap text-sm text-neutral-500">
-                <span class="font-semibold text-neutral-900">{{ totalElements() }}</span>
+            <p class="whitespace-nowrap text-xs sm:text-sm text-neutral-500">
+                <span class="font-semibold text-neutral-900">
+                    {{ totalElements() }}
+                </span>
                 medias
             </p>
         </div>
+
     </div>
 </div>
 
+<!-- Content -->
 @if (!isLoading()) {
-<div class="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-    @for (item of list(); track item.mediaId) {
-    <button type="button" class="group relative aspect-square overflow-hidden rounded-xl bg-neutral-100 ring-1 ring-neutral-200
-               shadow-sm transition
-               hover:shadow-md hover:ring-neutral-300
-               focus:outline-none focus-visible:ring-2 focus-visible:ring-[#6366F1]" (click)="clickOnMedia(item)">
-        <img class="h-full w-full object-cover transition-transform duration-200 group-hover:scale-[1.03]"
-            [src]="getUrl(item.key)" alt="" loading="lazy" />
 
-        <div class="pointer-events-none absolute inset-0 opacity-0 transition group-hover:opacity-100 bg-black/10">
+<div class="grid grid-cols-2 gap-2
+           sm:grid-cols-3
+           md:grid-cols-4
+           lg:grid-cols-5">
+
+    @for (item of list(); track item.mediaId) {
+
+    <button type="button" class="group relative aspect-square overflow-hidden rounded-xl
+               bg-neutral-100 ring-1 ring-neutral-200 shadow-sm
+               transition
+               hover:shadow-md hover:ring-neutral-300
+               focus:outline-none
+               focus-visible:ring-2 focus-visible:ring-[#6366F1]" (click)="clickOnMedia(item)">
+
+        <img class="h-full w-full object-cover transition-transform duration-200
+                 group-hover:scale-[1.03]" [src]="getUrl(item.key)" alt="" loading="lazy" />
+
+        <div class="pointer-events-none absolute inset-0
+                 bg-black/10 opacity-0 transition
+                 group-hover:opacity-100">
         </div>
 
         @if (selectedMedias().includes(item.mediaId)) {
-        <span
-            class="absolute right-1 top-1 grid h-6 w-6 place-items-center rounded-full bg-[#6366F1] text-sm text-white shadow">
+        <span class="absolute right-1 top-1
+                   grid h-6 w-6 place-items-center
+                   rounded-full bg-[#6366F1]
+                   text-sm text-white shadow">
             ✓
         </span>
         }
+
     </button>
+
     }
 </div>
+
 } @else {
-<hlm-empty>
+
+<!-- Loading state -->
+<hlm-empty class="py-12">
     <hlm-empty-header>
         <hlm-empty-media variant="icon">
             <hlm-spinner />
         </hlm-empty-media>
-        <div hlmEmptyTitle>Uploading your medias</div>
-        <div hlmEmptyDescription>Please wait while we upload your files. Do not refresh the page.</div>
+        <div hlmEmptyTitle>
+            Uploading your media
+        </div>
+        <div hlmEmptyDescription>
+            Please wait while we upload your files. Do not refresh the page.
+        </div>
     </hlm-empty-header>
 </hlm-empty>
+
 }

@@ -62,15 +62,15 @@ export class MyProfile {
     this.updatingPicture.set(true);
   }
 
-  catchUrl(url: string) {
+  catchUrl(url: string[]) {
     this.updatingPicture.set(false);
     let message = "Image chosen for ";
     if (this.labelForPictureField() === "profilePicture") {
-      this.updateForm.controls.profilePicture.setValue(url);
+      this.updateForm.controls.profilePicture.setValue(url[0]);
       message += "profile picture";
     }
     if (this.labelForPictureField() === "coverPicture") {
-      this.updateForm.controls.coverPicture.setValue(url);
+      this.updateForm.controls.coverPicture.setValue(url[0]);
       message += "cover picture";
     }
     this.update();

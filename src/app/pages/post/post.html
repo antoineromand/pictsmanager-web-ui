@@ -1,0 +1,76 @@
+<div class="mx-auto w-full max-w-4xl px-4 py-4 sm:px-6">
+
+    <form [formGroup]="postForm" (submit)="sendPost()" class="flex p-5 flex-col bg-white rounded-2xl">
+
+        <div class="border-b border-neutral-200 pb-3">
+            <h1 class="text-base font-semibold text-neutral-900 sm:text-lg">
+                Create post
+            </h1>
+            <p class="text-xs text-neutral-500 sm:text-sm">
+                Add a caption and select your media.
+            </p>
+        </div>
+
+        <section class="mt-4">
+            <div class="mb-2 flex items-baseline justify-between">
+                <label class="text-sm font-medium text-neutral-900">
+                    Caption
+                </label>
+                <span class="text-xs text-neutral-500">
+                    {{charsCounter()}} / 120
+                </span>
+            </div>
+
+            <textarea rows="4" placeholder="Write a caption…" class="w-full resize-none rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm text-neutral-900
+               placeholder:text-neutral-400 outline-none
+               focus:border-neutral-400 focus:ring-2 focus:ring-neutral-200" formControlName="caption"></textarea>
+
+            <p class="mt-2 text-xs text-neutral-500">
+                Tip: add hashtags or mention accounts.
+            </p>
+        </section>
+
+        <section class="mt-6">
+
+            <div class="mb-2">
+                <h2 class="text-sm font-medium text-neutral-900">
+                    Media
+                    <span style="background-color: #6366F1;"
+                        class="rounded-full bg- text-white px-2 py-1 text-xs font-bold">{{getSelectionSize()}}</span>
+                </h2>
+                <p class="text-xs text-neutral-500">
+                    Select one or more images.
+                </p>
+            </div>
+
+            <div class="rounded-2xl p-2 overflow-hidden border border-neutral-200 bg-white">
+                <my-gallery [maxSelectedItems]="3" (urlOutPutEvent)="catchSelection($event)"></my-gallery>
+            </div>
+
+            <p class="mt-2 text-xs text-neutral-500">
+                Click on a media to select it.
+            </p>
+
+
+        </section>
+
+        <div class="sticky bottom-0 mt-6 border-t border-neutral-200 bg-white py-3">
+
+            <div class="flex gap-3 sm:justify-end">
+                <button type="button" class="flex-1 rounded-xl border border-neutral-200 bg-white px-4 py-2 text-sm font-medium text-neutral-800
+                 hover:bg-neutral-50 active:scale-[0.99]
+                 sm:flex-none">
+                    Reset
+                </button>
+
+                <button type="submit" class="flex-1 rounded-xl bg-neutral-900 px-4 py-2 text-sm font-semibold text-white
+                 hover:bg-neutral-800 active:scale-[0.99]
+                 sm:flex-none">
+                    Publish
+                </button>
+            </div>
+
+        </div>
+
+    </form>
+</div>
