@@ -5,17 +5,23 @@ import { MyProfile } from '../../components/my-profile/my-profile';
 import { toast } from 'ngx-sonner';
 import { HlmItemImports } from '@spartan-ng/helm/item';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
+import { Post } from '../../components/post/post';
+import { PostData } from '../../interfaces/post.interface';
+import { PostService } from '../../services/post.service';
 
 @Component({
   selector: 'profile-page',
-  imports: [MyProfile, HlmItemImports, HlmSpinnerImports],
+  imports: [MyProfile, HlmItemImports, HlmSpinnerImports, Post],
   templateUrl: './profile-page.html'
 })
 export class ProfilePage implements OnInit {
 
   userProfileService = inject(UserProfileService);
+  postService = inject(PostService);
 
   userProfil = signal<UserProfileInterface | null>(null);
+
+  userPosts = signal<PostData[]>([]);
 
   isProcessing = signal<boolean>(false);
 
@@ -25,6 +31,12 @@ export class ProfilePage implements OnInit {
       next: (res) => {
         this.userProfil.set(res.data);
       },
+    });
+    this.postService.getUserPost().subscribe({
+      next: (value) => {
+        console.log(value);
+        this.userPosts.set(value.data);
+      }
     });
   }
 
