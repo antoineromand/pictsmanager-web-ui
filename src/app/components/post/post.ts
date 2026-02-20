@@ -13,6 +13,7 @@ export class Post {
     id: 100,
     author: "James",
     caption: "This is a test",
+    authorProfilePicture: "",
     mediaRowReadModels: [
       { mediaId: "xxxx-xxxx-xxxx", key: "xxxx-xxx-xxxx", userId: 1 }
     ],

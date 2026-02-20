@@ -6,6 +6,7 @@ export interface CreatePostRequestInterface {
 export interface PostData {
     id: number,
     author: string,
+    authorProfilePicture: string,
     caption: string,
     mediaRowReadModels: {
         mediaId: string,
