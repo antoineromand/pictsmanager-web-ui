@@ -15,4 +15,5 @@ export interface PostData {
     }[],
     likes: number,
     created_at: string;
+    isLikedByUser: boolean;
 };

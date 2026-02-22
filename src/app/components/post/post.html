@@ -7,12 +7,13 @@
         <div class="flex items-center gap-3">
 
             <div class="w-10 h-10 rounded-full overflow-hidden bg-neutral-200 shrink-0">
-                <img [src]="getUrl(post().authorProfilePicture)" alt="user avatar" class="w-full h-full object-cover" />
+                <img [src]="getUrl(post()?.authorProfilePicture)" alt="user avatar"
+                    class="w-full h-full object-cover" />
             </div>
 
             <div>
                 <p class="text-sm font-semibold text-neutral-900 hover:underline cursor-pointer">
-                    {{ post().author }}
+                    {{ post()?.author }}
                 </p>
             </div>
 
@@ -25,22 +26,22 @@
     <div class="relative w-full bg-black">
         <div class="flex w-full overflow-x-auto snap-x snap-mandatory scroll-smooth
            [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            @for (media of post().mediaRowReadModels; track $index) {
+            @for (media of post()?.mediaRowReadModels; track $index) {
             <div class="w-full shrink-0 snap-start">
                 <img [src]="getUrl(media.key)" alt="post media" class="w-full aspect-square object-cover" />
             </div>
             }
         </div>
 
-        @if (post().mediaRowReadModels.length > 1) {
+        @if (post()?.mediaRowReadModels?.length && getMediaSize() > 1) {
         <div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
-            @for (media of post().mediaRowReadModels; track $index) {
+            @for (media of post()?.mediaRowReadModels; track $index) {
             <span class="h-1.5 w-1.5 rounded-full bg-white/70"></span>
             }
         </div>
 
         <div class="absolute top-3 right-3 rounded-full bg-black/60 px-2 py-1 text-xs text-white">
-            1 / {{ post().mediaRowReadModels.length }}
+            1 / {{ post()?.mediaRowReadModels?.length }}
         </div>
         }
     </div>
@@ -50,13 +51,11 @@
 
         <div class="flex items-center justify-between">
             <div class="flex space-x-4">
-                <button class="text-neutral-700 hover:text-red-500 transition">
-                    ❤️
+                <button hlmToggle class="size-8" [state]="post()?.isLikedByUser ? 'on' : 'off'"
+                    (click)="likeBtnPressed()"
+                    class="data-[state=on]:bg-transparent data-[state=on]:*:[ng-icon]:*:[svg]:fill-red-500 data-[state=on]:*:[ng-icon]:*:[svg]:stroke-red-500">
+                    <ng-icon hlm size="sm" name="lucideHeart" />
                 </button>
-                <button class="text-neutral-700 hover:text-neutral-900 transition">
-                    💬
-                </button>
-
             </div>
             <div class="text-neutral-700">
                 🔖
@@ -64,16 +63,16 @@
         </div>
 
         <p class="text-sm font-semibold text-neutral-900">
-            {{ post().likes }} likes
+            {{ post()?.likes }} likes
         </p>
 
         <p class="text-sm text-neutral-800 line-clamp-2">
-            <span class="font-semibold text-neutral-900">User Name</span>
-            {{ post().caption }}
+            <span class="font-semibold text-neutral-900">{{post()?.author}}</span>
+            {{ post()?.caption }}
         </p>
 
         <p class="text-xs text-neutral-500">
-            {{ post().created_at | date:'short' }}
+            {{ post()?.created_at | date:'short' }}
         </p>
 
     </footer>

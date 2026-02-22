@@ -16,12 +16,12 @@
 </div>
 }
 <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-6 sm:mt-10">
-    <my-profile [userProfile]="userProfil()" (updateFormOutput)="updateUserProfil($event)"></my-profile>
+    <my-profile [userProfile]="userProfile()" (updateFormOutput)="updateUserProfile($event)"></my-profile>
 
     <div class="mt-8 sm:mt-10 border-t border-neutral-200 pt-6">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             @for (post of userPosts(); track $index) {
-            <app-post [profileLayout]="false" [post]="post"></app-post>
+            <app-post [profileLayout]="false" [post]="post" (toggleLikeBtnOutput)="toggleLikePost($event)"></app-post>
             }
         </div>
     </div>
