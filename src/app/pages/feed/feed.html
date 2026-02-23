@@ -1,0 +1,29 @@
+<div class="min-h-screen ">
+    <div class="max-w-6xl mx-auto px-4 py-6">
+
+        <!-- Header -->
+        <div class="mb-8">
+            <h1 class="text-2xl font-bold text-gray-800 dark:text-white">
+                My Feed
+            </h1>
+            <p class="text-sm text-gray-500 dark:text-gray-400">
+                Latest posts
+            </p>
+        </div>
+
+        <!-- Grid Feed -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+            @for (post of feed(); track $index) {
+            <div>
+
+                <app-post [post]="post" [profileLayout]="false" (toggleLikeBtnOutput)="toggleLikeBtn($event)">
+                </app-post>
+
+            </div>
+            }
+
+        </div>
+
+    </div>
+</div>
