@@ -2,13 +2,19 @@ import { Component, DestroyRef, effect, inject, signal, type OnDestroy } from '@
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MyGallery } from '../../components/my-gallery/my-gallery';
 import { PostService } from '../../services/post.service';
-import { startWith, takeUntil, type Subscription } from 'rxjs';
-import type { CreatePostRequestInterface } from '../../interfaces/post.interface';
+import { type Subscription } from 'rxjs';
 import { toast } from 'ngx-sonner';
+import { HlmAlertImports } from '@spartan-ng/helm/alert';
+import { NgIcon, provideIcons } from '@ng-icons/core';
+import { lucideCircleCheck } from '@ng-icons/lucide';
+import { HlmIconImports } from '@spartan-ng/helm/icon';
+import type { CreatePostRequestInterface } from '../../interfaces/post.interface';
+
 
 @Component({
   selector: 'post',
-  imports: [MyGallery, ReactiveFormsModule],
+  imports: [MyGallery, ReactiveFormsModule, HlmAlertImports, NgIcon, HlmIconImports],
+  providers: [provideIcons({ lucideCircleCheck })],
   templateUrl: './post.html',
 })
 export class Post implements OnDestroy {
@@ -17,15 +23,20 @@ export class Post implements OnDestroy {
   private captionSub?: Subscription;
   charsCounter = signal<number>(0);
 
+  displayError = signal<boolean>(false);
+
   selectedMedias = signal<string[]>([]);
+
+  public errorMsg = "";
 
   postForm = new FormGroup({
     caption: new FormControl<string>("", [Validators.required, Validators.minLength(1), Validators.maxLength(120)]),
-    medias: new FormArray<FormControl<string>>([])
+    medias: new FormArray<FormControl<string>>([], [Validators.required])
   });
 
-  catchSelection(urls: string[]) {
-    this.selectedMedias.set(urls);
+  catchSelection(ids: string[]) {
+    this.selectedMedias.set(ids);
+    this.updateFormArray();
   }
 
   getSelectionSize() {
@@ -37,23 +48,38 @@ export class Post implements OnDestroy {
     mediasArray.clear();
 
     for (const url of this.selectedMedias()) {
-      mediasArray.push(new FormControl<string>(url, { nonNullable: true }));
+      mediasArray.push(new FormControl<string>(url, { nonNullable: true },));
     }
+
   }
 
   sendPost() {
-    this.updateFormArray();
-    const payload: CreatePostRequestInterface = {
-      caption: this.postForm.controls.caption.value as string,
-      medias: this.postForm.controls.medias.value
-    };
-    this.postService.createPost(payload).subscribe({
-      next: () => {
-        toast.success("Post created successfully");
-        this.postForm.reset();
-        this.selectedMedias.set([]);
+    this.displayError.set(false);
+    this.errorMsg = "Error: \n";
+    if (this.postForm.valid) {
+      const payload: CreatePostRequestInterface = {
+        caption: this.postForm.controls.caption.value as string,
+        medias: this.postForm.controls.medias.value
+      };
+      this.postService.createPost(payload).subscribe({
+        next: () => {
+          toast.success("Post created successfully");
+          this.postForm.reset();
+          this.selectedMedias.set([]);
+        }
+      });
+    } else {
+      if (this.postForm?.controls?.caption?.errors?.["required"]) {
+        this.errorMsg += "- Caption must not be null.\n";
       }
-    });
+      if (this.postForm?.controls.caption?.errors?.["maxlength"]) {
+        this.errorMsg += "- Caption length must be between 1 and 120 characters.\n";
+      }
+      if (this.postForm?.controls.medias?.errors?.["required"]) {
+        this.errorMsg += "- At least 1 medias must be attached to the post.";
+      }
+      this.displayError.set(true);
+    }
   }
 
   constructor() {

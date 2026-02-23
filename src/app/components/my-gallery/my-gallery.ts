@@ -37,6 +37,8 @@ export class MyGallery {
 
   labelFor = input<string>("");
 
+  creatingPost = input<boolean>(false);
+
   urlOutPutEvent = output<string[]>();
 
   constructor() {
@@ -79,7 +81,7 @@ export class MyGallery {
           : s
     );
 
-    this.urlOutPutEvent.emit(this.selectedMedias());
+    if (this.creatingPost()) this.urlOutPutEvent.emit(this.selectedMedias());
   }
 
   getUrl(originalKey: string) {

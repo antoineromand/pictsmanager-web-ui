@@ -65,6 +65,9 @@
       ],
       "@spartan-ng/helm/toggle": [
         "./libs/ui/toggle/src/index.ts"
+      ],
+      "@spartan-ng/helm/alert": [
+        "./libs/ui/alert/src/index.ts"
       ]
     }
   },

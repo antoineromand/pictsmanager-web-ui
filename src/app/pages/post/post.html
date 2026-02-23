@@ -2,6 +2,8 @@
 
     <form [formGroup]="postForm" (submit)="sendPost()" class="flex p-5 flex-col bg-white rounded-2xl">
 
+
+
         <div class="border-b border-neutral-200 pb-3">
             <h1 class="text-base font-semibold text-neutral-900 sm:text-lg">
                 Create post
@@ -10,6 +12,13 @@
                 Add a caption and select your media.
             </p>
         </div>
+
+        @if(displayError()) {
+        <div hlmAlert variant="destructive" class="pb-3 mt-3">
+            <ng-icon hlm hlmAlertIcon name="lucideCircleCheck" />
+            <div hlmAlertDescription class="whitespace-pre-line">{{ errorMsg }}</div>
+        </div>
+        }
 
         <section class="mt-4">
             <div class="mb-2 flex items-baseline justify-between">
@@ -44,7 +53,8 @@
             </div>
 
             <div class="rounded-2xl p-2 overflow-hidden border border-neutral-200 bg-white">
-                <my-gallery [maxSelectedItems]="3" (urlOutPutEvent)="catchSelection($event)"></my-gallery>
+                <my-gallery [maxSelectedItems]="3" (urlOutPutEvent)="catchSelection($event)"
+                    [creatingPost]="true"></my-gallery>
             </div>
 
             <p class="mt-2 text-xs text-neutral-500">
