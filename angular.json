@@ -70,7 +70,7 @@
           "builder": "@angular/build:unit-test",
           "options": {
             "runner": "vitest",
-            "tsConfig": "tsconfig.app.json"
+            "tsConfig": "tsconfig.spec.json"
           }
         }
       },
